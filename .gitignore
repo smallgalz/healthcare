@@ -1,3 +1,39 @@
-# Don't track content of these folders
+# Dependencies
 node_modules/
+
+# Build output
 build/
+dist/
+target/
+
+# Environment files (never commit secrets)
+.env
+.env.local
+.env.*.local
+
+# Rust / Soroban build artifacts
+target/
+Cargo.lock
+
+# SQLite databases
+*.db
+*.sqlite
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor directories
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Coverage reports
+coverage/

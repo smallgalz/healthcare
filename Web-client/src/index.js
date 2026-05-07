@@ -34,10 +34,10 @@ class App extends React.Component {
   render() {
     return (
       <div className="container container-fluid login-conatiner">
-      {this.state.login ? this.state.user === "" ? this.state.password === "patient"? <Redirect to="/patient" /> :
+      {this.state.login ? this.state.password === "patient"? <Redirect to="/patient" /> :
 this.state.password === "hadmin" ?<Redirect to="/hadmin" /> :
 this.state.password === "labadmin"? <Redirect to="/labadmin" />:
-this.state.password === "insurance"? <Redirect to="/insurance" />:null:null:null}
+this.state.password === "insurance"? <Redirect to="/insurance" />:null:null}
 <div style={{
                     maxWidth: '300px',
                     margin: '0 auto' }}>

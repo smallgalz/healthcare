@@ -1,4 +1,4 @@
-const { SorobanClient, Account, TransactionBuilder, Networks, Operation } = require('stellar-sdk');
+const { Account, TransactionBuilder, Networks, Operation, SorobanRpc } = require('@stellar/stellar-sdk');
 const fs = require('fs');
 const path = require('path');
 const redis = require('redis');
@@ -6,10 +6,10 @@ const logger = require('../services/logger');
 
 class SmartContractManager {
   constructor() {
-    this.client = new SorobanClient({
-      horizonURL: process.env.STELLAR_HORIZON_URL || 'https://horizon-testnet.stellar.org',
-    });
-    this.networkPassphrase = process.env.STELLAR_NETWORK || Networks.TESTNET_NETWORK_PASSPHRASE;
+    this.client = new SorobanRpc.Server(
+      process.env.STELLAR_RPC_URL || 'https://soroban-testnet.stellar.org'
+    );
+    this.networkPassphrase = process.env.STELLAR_NETWORK || Networks.TESTNET;
     this.redisClient = redis.createClient();
     this.contractRegistry = new Map();
     this.compiledContracts = new Map();

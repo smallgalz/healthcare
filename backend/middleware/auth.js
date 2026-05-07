@@ -77,8 +77,23 @@ const validateLogin = [
   }
 ];
 
+function authorizeRoles(...roles) {
+  // Flatten in case an array is passed as the first argument
+  const allowed = roles.flat();
+  return (req, res, next) => {
+    if (!req.user || !allowed.includes(req.user.role)) {
+      return res.status(403).json({
+        error: 'Forbidden',
+        message: 'You do not have permission to perform this action'
+      });
+    }
+    next();
+  };
+}
+
 module.exports = {
   authenticateToken,
+  authorizeRoles,
   generateTokens,
   hashPassword,
   comparePassword,

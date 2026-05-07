@@ -154,6 +154,7 @@ router.put('/:patientId', async (req, res, next) => {
   
   const db = getDatabase();
   
+  try {
     // 1. Get previous state
     const previousState = await new Promise((resolve, reject) => {
       db.get('SELECT * FROM patients WHERE id = ?', [patientId], (err, row) => {

@@ -51,15 +51,18 @@ class LoggingService {
       ]
     });
 
-    // Add database transport
-    this.logger.add(new winston.transports.Stream({
-      stream: {
-        write: (message) => {
-          const log = JSON.parse(message);
+    // Add database transport using a proper Writable stream
+    const { Writable } = require('stream');
+    const dbWritable = new Writable({
+      write: (chunk, encoding, callback) => {
+        try {
+          const log = JSON.parse(chunk.toString());
           this.saveToDatabase(log);
-        }
+        } catch (_) { /* ignore parse errors */ }
+        callback();
       }
-    }));
+    });
+    this.logger.add(new winston.transports.Stream({ stream: dbWritable }));
   }
 
   async saveToDatabase(log) {

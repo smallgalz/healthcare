@@ -53,6 +53,7 @@ const { initializeDatabase } = require('./database/init');
 const { authenticateToken } = require('./middleware/auth');
 const { cacheMiddleware } = require('./middleware/cache');
 const { errorHandler } = require('./middleware/errorHandler');
+const auditMiddleware = require('./middleware/auditMiddleware');
 const performanceMonitoringService = require('./services/performanceMonitoringService');
 const threatIntelligenceService = require('./services/threatIntelligenceService');
 const aiPerformanceMonitoringService = require('./services/aiPerformanceMonitoringService');

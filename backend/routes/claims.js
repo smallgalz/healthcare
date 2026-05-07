@@ -194,25 +194,22 @@ router.post('/', async (req, res, next) => {
       }
       
       try {
-        const fraudAnalysis = await fraudDetectionService.analyzeClaimFraud(this.lastID);
-        
-        if (req.io) {
-          req.io.to(`patient-${patientId}`).emit('fraud-analysis-complete', {
-            claimId: this.lastID,
-            riskLevel: fraudAnalysis.risk_level,
-            riskScore: fraudAnalysis.risk_score,
-            message: `Fraud analysis completed with ${fraudAnalysis.risk_level} risk level`
-          });
-        }
-        
+        fraudDetectionService.analyzeClaimFraud(this.lastID).then((fraudAnalysis) => {
+          if (req.io) {
+            req.io.to(`patient-${patientId}`).emit('fraud-analysis-complete', {
+              claimId: this.lastID,
+              riskLevel: fraudAnalysis.risk_level,
+              riskScore: fraudAnalysis.risk_score,
+              message: `Fraud analysis completed with ${fraudAnalysis.risk_level} risk level`
+            });
+          }
+        }).catch((fraudError) => {
+          console.error('Fraud analysis failed:', fraudError);
+        });
+
         res.status(201).json({
           message: 'Claim created successfully',
-          claimId: this.lastID,
-          fraudAnalysis: {
-            risk_level: fraudAnalysis.risk_level,
-            risk_score: fraudAnalysis.risk_score,
-            requires_review: fraudAnalysis.risk_score >= 50
-          }
+          claimId: this.lastID
         });
       } catch (fraudError) {
         console.error('Fraud analysis failed:', fraudError);
