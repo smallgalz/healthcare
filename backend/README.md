@@ -1,172 +1,241 @@
-# Healthcare Backend API
+# Healthcare Drips — Backend API
 
-A comprehensive RESTful API for the Healthcare Patient Dashboard system with real-time updates, authentication, and optimized data retrieval.
+> The Node.js / Express REST API powering the Healthcare Drips platform. Handles authentication, patient data, insurance claims, appointments, payments, real-time notifications, blockchain integration, and more.
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](../LICENSE)
+[![Node.js](https://img.shields.io/badge/Node.js-%3E%3D18-green)](https://nodejs.org/)
+[![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](../docs/CONTRIBUTING.md)
+
+---
 
 ## Features
 
-- **JWT Authentication**: Secure token-based authentication system
-- **RESTful API**: Complete CRUD operations for all healthcare data
-- **Real-time Updates**: WebSocket integration for live notifications
-- **Data Aggregation**: Optimized queries for dashboard performance
-- **Rate Limiting**: Built-in protection against API abuse
-- **Caching**: Redis/NodeCache integration for improved performance
-- **Database Optimization**: Indexed SQLite database for fast queries
+- **JWT Authentication** — Secure token-based auth with refresh tokens
+- **RESTful API** — Full CRUD for patients, records, claims, appointments, and payments
+- **Real-time Updates** — WebSocket (Socket.IO) for live notifications
+- **Blockchain Integration** — Ethereum & Stellar smart contract interaction
+- **Fraud Detection** — ML-assisted claim fraud analysis
+- **Advanced Rate Limiting** — Per-route and per-user request throttling
+- **Caching** — Redis / NodeCache for reduced database load
+- **Audit Logging** — Full request/response audit trail middleware
+- **Zero-Trust Middleware** — Identity verification on every request
+- **Database Optimization** — Indexed SQLite with sharding, replication, and backup support
 
-## API Endpoints
+---
 
-### Authentication
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - User login
-- `POST /api/auth/refresh` - Refresh JWT token
-- `POST /api/auth/logout` - User logout
+## Getting started
 
-### Patients
-- `GET /api/patients/dashboard/:patientId` - Get patient dashboard data
-- `GET /api/patients/:patientId` - Get patient details
-- `POST /api/patients` - Create new patient profile
-- `PUT /api/patients/:patientId` - Update patient profile
+### Prerequisites
 
-### Medical Records
-- `GET /api/medical-records/patient/:patientId` - Get patient medical records
-- `GET /api/medical-records/:recordId` - Get specific medical record
-- `POST /api/medical-records` - Create new medical record
-- `PUT /api/medical-records/:recordId` - Update medical record
-- `DELETE /api/medical-records/:recordId` - Delete medical record
+- Node.js ≥ 18
+- npm ≥ 9
+- Redis (optional, falls back to in-memory cache)
+- SQLite (bundled via `better-sqlite3`)
 
-### Insurance Claims
-- `GET /api/claims/patient/:patientId` - Get patient claims
-- `GET /api/claims/summary/:patientId` - Get claims summary
-- `GET /api/claims/:claimId` - Get specific claim
-- `POST /api/claims` - Create new claim
-- `PUT /api/claims/:claimId/status` - Update claim status
+### Installation
 
-### Appointments
-- `GET /api/appointments/patient/:patientId` - Get patient appointments
-- `GET /api/appointments/upcoming/:patientId` - Get upcoming appointments
-- `GET /api/appointments/:appointmentId` - Get specific appointment
-- `POST /api/appointments` - Schedule new appointment
-- `PUT /api/appointments/:appointmentId` - Update appointment
-- `DELETE /api/appointments/:appointmentId` - Cancel appointment
-
-### Premium Payments
-- `GET /api/payments/patient/:patientId` - Get patient payments
-- `GET /api/payments/summary/:patientId` - Get payments summary
-- `POST /api/payments` - Record new payment
-
-## Installation
-
-1. Install dependencies:
 ```bash
+# From the repo root
+cd backend
 npm install
 ```
 
-2. Copy environment variables:
+### Environment setup
+
 ```bash
 cp .env.example .env
 ```
 
-3. Edit `.env` file with your configuration:
+Edit `.env` with your values:
+
 ```env
 NODE_ENV=development
 PORT=5000
 FRONTEND_URL=http://localhost:3000
+
+# Auth
 JWT_SECRET=your-super-secret-jwt-key
 JWT_EXPIRE=7d
+
+# Database
 DB_PATH=./database/healthcare.db
+
+# Cache
 REDIS_URL=redis://localhost:6379
 CACHE_TTL=300
+
+# Rate limiting
 RATE_LIMIT_WINDOW=900000
 RATE_LIMIT_MAX=100
 ```
 
-4. Start the server:
+### Run the server
+
 ```bash
-# Development
+# Development (hot-reload)
 npm run dev
 
 # Production
 npm start
 ```
 
-## Database Schema
+The API will be available at `http://localhost:5000`.
 
-The application uses SQLite with the following main tables:
+---
 
-- **users**: User authentication and profile data
-- **patients**: Patient-specific medical information
-- **medical_records**: Complete medical history
-- **insurance_claims**: Insurance claim tracking
-- **premium_payments**: Payment history
-- **appointments**: Appointment scheduling
-- **notifications**: System notifications
+## API reference
 
-## WebSocket Events
+### Authentication
 
-The server emits real-time events for:
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/auth/register` | Register a new user |
+| POST | `/api/auth/login` | Log in and receive a JWT |
+| POST | `/api/auth/refresh` | Refresh an expired JWT |
+| POST | `/api/auth/logout` | Invalidate the current token |
 
-- `new-medical-record`: New medical record added
-- `new-claim`: New insurance claim submitted
-- `claim-status-update`: Claim status changed
-- `new-appointment`: New appointment scheduled
-- `appointment-updated`: Appointment modified
-- `new-payment`: Payment recorded
+### Patients
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/patients/dashboard/:patientId` | Full dashboard data |
+| GET | `/api/patients/:patientId` | Patient profile |
+| POST | `/api/patients` | Create a patient profile |
+| PUT | `/api/patients/:patientId` | Update a patient profile |
+
+### Medical Records
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/medical-records/patient/:patientId` | All records for a patient |
+| GET | `/api/medical-records/:recordId` | Single record |
+| POST | `/api/medical-records` | Create a record |
+| PUT | `/api/medical-records/:recordId` | Update a record |
+| DELETE | `/api/medical-records/:recordId` | Delete a record |
+
+### Insurance Claims
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/claims/patient/:patientId` | All claims for a patient |
+| GET | `/api/claims/summary/:patientId` | Claims summary |
+| GET | `/api/claims/:claimId` | Single claim |
+| POST | `/api/claims` | Submit a new claim |
+| PUT | `/api/claims/:claimId/status` | Update claim status |
+
+### Appointments
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/appointments/patient/:patientId` | All appointments |
+| GET | `/api/appointments/upcoming/:patientId` | Upcoming appointments |
+| GET | `/api/appointments/:appointmentId` | Single appointment |
+| POST | `/api/appointments` | Schedule an appointment |
+| PUT | `/api/appointments/:appointmentId` | Update an appointment |
+| DELETE | `/api/appointments/:appointmentId` | Cancel an appointment |
+
+### Payments
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/payments/patient/:patientId` | Payment history |
+| GET | `/api/payments/summary/:patientId` | Payment summary |
+| POST | `/api/payments` | Record a payment |
+
+Additional route groups: `blockchain`, `fraudDetection`, `advancedAnalytics`, `notifications`, `advancedSecurity`, `iotHealthMonitoring`, `mlModelServing`, and more — see the `routes/` directory for the full list.
+
+---
 
 ## Authentication
 
-All API endpoints (except authentication) require a valid JWT token:
+All endpoints except `/api/auth/*` require a valid JWT in the `Authorization` header:
 
-```javascript
-headers: {
-  'Authorization': 'Bearer <your-jwt-token>'
-}
+```http
+Authorization: Bearer <your-jwt-token>
 ```
 
-## Rate Limiting
+---
 
-- **Window**: 15 minutes
-- **Max Requests**: 100 per IP
-- **Cache TTL**: 5 minutes (configurable)
+## WebSocket events
 
-## Error Handling
+The server emits the following real-time events over Socket.IO:
 
-The API returns consistent error responses:
+| Event | Trigger |
+|-------|---------|
+| `new-medical-record` | A new record is created |
+| `new-claim` | A claim is submitted |
+| `claim-status-update` | A claim status changes |
+| `new-appointment` | An appointment is scheduled |
+| `appointment-updated` | An appointment is modified |
+| `new-payment` | A payment is recorded |
+
+---
+
+## Database schema
+
+SQLite tables:
+
+| Table | Purpose |
+|-------|---------|
+| `users` | Auth credentials and roles |
+| `patients` | Patient medical profiles |
+| `medical_records` | Full medical history |
+| `insurance_claims` | Claim tracking |
+| `premium_payments` | Payment history |
+| `appointments` | Appointment scheduling |
+| `notifications` | System notifications |
+
+---
+
+## Project structure
+
+```
+backend/
+├── server.js               # Entry point
+├── routes/                 # Route handlers (one file per domain)
+├── services/               # Business logic & integrations
+├── middleware/             # Auth, audit, rate-limit, zero-trust, etc.
+├── blockchain/             # Ethereum / Stellar interaction helpers
+├── database/               # DB init, migrations, optimization, backup
+└── .env.example
+```
+
+---
+
+## Error format
+
+All errors follow a consistent shape:
 
 ```json
 {
   "error": "Error Type",
-  "message": "Human readable error message",
-  "details": "Additional error information (in development)"
+  "message": "Human-readable description",
+  "details": "Stack trace or extra info (development only)"
 }
 ```
 
-## Performance Optimization
+---
 
-- Database indexes on frequently queried fields
-- Response caching for GET requests
-- Optimized aggregation queries
-- Connection pooling
-- Compression middleware
+## Contributing
 
-## Security Features
+1. Check the [open issues](../../../issues) for bugs or features to work on.
+2. Fork the repo and create a branch: `git checkout -b fix/your-fix` or `git checkout -b feat/your-feature`.
+3. Follow the existing code style (ESLint config in `package.json`).
+4. Run `npm test` before pushing.
+5. Open a PR against `main` with a clear description.
 
-- JWT token authentication
-- Password hashing with bcrypt
-- Rate limiting
-- CORS protection
-- Helmet.js security headers
-- Input validation and sanitization
+See [`docs/CONTRIBUTING.md`](../docs/CONTRIBUTING.md) for the full contribution guide.
 
-## Development
-
-The server includes comprehensive logging and error tracking. In development mode, detailed error information is returned for debugging.
+---
 
 ## Testing
 
-Run the test suite:
 ```bash
 npm test
 ```
 
+---
+
 ## License
 
-MIT License - see LICENSE file for details.
+[MIT](../LICENSE)
