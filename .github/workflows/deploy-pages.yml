@@ -53,7 +53,7 @@ jobs:
       - name: Build modern frontend
         working-directory: frontend
         run: |
-          PUBLIC_URL=/medichain-platform/ npm run build
+          PUBLIC_URL=/healthcare/ npm run build
           # SPA fallback — GitHub Pages serves 404.html for unknown paths
           cp build/index.html build/404.html
 
@@ -78,7 +78,7 @@ jobs:
       - name: Build Web-client
         working-directory: Web-client
         run: |
-          PUBLIC_URL=/medichain-platform/web-client/ npm run build
+          PUBLIC_URL=/healthcare/web-client/ npm run build
           # SPA fallback for sub-path
           cp build/index.html build/404.html
 
