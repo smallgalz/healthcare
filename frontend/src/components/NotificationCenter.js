@@ -12,7 +12,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import axios from 'axios';
 import { io } from 'socket.io-client';
 import {
-  Bell, BellOff, Check, CheckCheck, Trash2, Filter,
+  Bell, BellOff, Check, CheckCheck, Trash2,
   RefreshCw, AlertCircle, Calendar, CreditCard,
   FileText, Activity, Shield, TrendingUp, Settings,
   X,

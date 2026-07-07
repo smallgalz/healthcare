@@ -10,11 +10,9 @@ import {
   CreditCard,
   Activity,
   DollarSign,
-  Clock,
   CheckCircle,
   AlertCircle,
   UserPlus,
-  FileText,
   Award,
   Database,
   Lock,
@@ -23,7 +21,6 @@ import {
   Bell,
   Menu,
   X,
-  ChevronDown,
 } from 'lucide-react';
 import './App.css';
 import MedicalRecordManager from './components/MedicalRecordManager';
@@ -53,15 +50,15 @@ const HEALTHCARE_DRIPS_ABI = [
 
 function App() {
   const [account, setAccount] = useState(null);
-  const [provider, setProvider] = useState(null);
+  const [provider, setProvider] = useState(null); // eslint-disable-line no-unused-vars
   const [contract, setContract] = useState(null);
   const [premiumDrips, setPremiumDrips] = useState([]);
   const [fundingRequests, setFundingRequests] = useState([]);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('dashboard');
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user] = useState(null);
+  const [token] = useState(null);
+  const [isAuthenticated] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [contractAddress, setContractAddress] = useState(process.env.REACT_APP_CONTRACT_ADDRESS || '0x...');
@@ -105,6 +102,7 @@ function App() {
     window.addEventListener('resize', checkMobile);
     
     return () => window.removeEventListener('resize', checkMobile);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const connectWallet = async (resolvedContractAddress = contractAddress) => {

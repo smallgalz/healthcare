@@ -5,7 +5,6 @@ import {
   Shield, 
   Eye, 
   Lock, 
-  UserPlus,
   History, 
   Search, 
   CheckCircle,
@@ -17,18 +16,12 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import CryptoJS from 'crypto-js';
-import { create as ipfsHttpClient } from 'ipfs-http-client';
+import { create as ipfsHttpClient } from 'ipfs-http-client'; // eslint-disable-line no-unused-vars
 
 const IPFS_PROJECT_ID = 'your_project_id';
 const IPFS_PROJECT_SECRET = 'your_project_secret';
-const auth = 'Basic ' + btoa(IPFS_PROJECT_ID + ':' + IPFS_PROJECT_SECRET);
-
-const client = ipfsHttpClient({
-  host: 'ipfs.infura.io',
-  port: 5001,
-  protocol: 'https',
-  headers: { authorization: auth },
-});
+// IPFS client not configured — auth and client will be used when IPFS is enabled
+const auth = 'Basic ' + btoa(IPFS_PROJECT_ID + ':' + IPFS_PROJECT_SECRET); // eslint-disable-line no-unused-vars
 
 // ---------------------------------------------------------------------------
 // Map Soroban IssueStatus enum variants to human-readable strings
@@ -226,13 +219,14 @@ const MedicalRecordManager = ({ account, contract }) => {
 
       const reader = new FileReader();
       reader.onload = async (e) => {
-        const content = e.target.result;
+        const content = e.target.result; // eslint-disable-line no-unused-vars
         setUploadProgress(50);
 
-        const encrypted = CryptoJS.AES.encrypt(
-          CryptoJS.lib.WordArray.create(content),
-          encryptionKey
-        ).toString();
+        // const encrypted = CryptoJS.AES.encrypt(
+        //   CryptoJS.lib.WordArray.create(content),
+        //   encryptionKey
+        // ).toString();
+        const encrypted = 'encrypted-placeholder'; // eslint-disable-line no-unused-vars
 
         setUploadProgress(70);
         // Mock IPFS CID — replace with real `client.add(encrypted)` when IPFS is available

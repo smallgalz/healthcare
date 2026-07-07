@@ -13,9 +13,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import {
-  Users, Calendar, DollarSign, Activity, FileText,
-  Search, ChevronRight, RefreshCw, AlertCircle,
-  CheckCircle, Clock, TrendingUp, Pill, Upload,
+  Users, Calendar, DollarSign, Activity,
+  Search, RefreshCw, AlertCircle,
+  CheckCircle, TrendingUp, Pill, Upload,
 } from 'lucide-react';
 
 const API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';

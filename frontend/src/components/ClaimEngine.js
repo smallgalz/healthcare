@@ -1,19 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   Activity, 
-  Cpu, 
   Plus, 
   CheckCircle, 
-  XCircle, 
   AlertCircle, 
   Settings, 
   BarChart3, 
   Layers, 
   Play, 
-  Search,
-  Filter,
-  ArrowRight,
-  Database,
   RefreshCw,
   Trash2,
   FileText,
@@ -30,7 +24,7 @@ const ClaimEngine = ({ account, contract }) => {
     successRate: 85,
     pending: 45
   });
-  const [rules, setRules] = useState([
+  const [rules] = useState([
     { id: 1, name: 'Low Amount Auto-Approve', min: 0, max: 500, types: ['PreventiveCare'], autoApprove: true, active: true },
     { id: 2, name: 'Standard Singuery Filter', min: 1000, max: 5000, types: ['Surgery'], autoApprove: false, active: true },
     { id: 3, name: 'Emergency Fast Track', min: 0, max: 10000, types: ['EmergencyTreatment'], autoApprove: true, active: true }

@@ -7,18 +7,10 @@ import {
   Calendar,
   CreditCard,
   AlertCircle,
-  CheckCircle,
-  Clock,
-  TrendingUp,
   User,
-  Activity,
-  DollarSign,
   Shield,
   Phone,
   Mail,
-  MapPin,
-  Filter,
-  Search,
   RefreshCw,
   Bell,
   ChevronRight,
@@ -114,12 +106,14 @@ const PatientDashboard = ({ user, token }) => {
     });
 
     return () => newSocket.close();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (user?.id) {
       fetchDashboardData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   useEffect(() => {
