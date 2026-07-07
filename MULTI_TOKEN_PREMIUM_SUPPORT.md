@@ -157,7 +157,7 @@ allocations.push_back(TokenAllocation {
 });
 
 // Create premium drip
-let drip_id = HealthcareDrips::create_premium_drip(
+let drip_id = MediChainPlatform::create_premium_drip(
     &env,
     patient_address,
     insurer_address,
@@ -174,7 +174,7 @@ let drip_id = HealthcareDrips::create_premium_drip(
 
 ```rust
 // Process premium payment (automatically handles token conversions)
-HealthcareDrips::process_multi_token_premium_payment(
+MediChainPlatform::process_multi_token_premium_payment(
     &env,
     drip_id,
     insurer_address,
@@ -185,7 +185,7 @@ HealthcareDrips::process_multi_token_premium_payment(
 
 ```rust
 // Create swap request
-let swap_id = HealthcareDrips::create_swap_request(
+let swap_id = MediChainPlatform::create_swap_request(
     &env,
     usdc_address,
     usdt_address,
@@ -208,7 +208,7 @@ let rebalance_config = RebalanceConfig {
     last_check: env.ledger().timestamp(),
 };
 
-HealthcareDrips::update_rebalance_config(
+MediChainPlatform::update_rebalance_config(
     &env,
     rebalance_config,
     admin_address,

@@ -1,6 +1,6 @@
 const CACHE_NAME = 'medichain-v1';
-const STATIC_CACHE = 'healthcare-drips-static-v1';
-const DYNAMIC_CACHE = 'healthcare-drips-dynamic-v1';
+const STATIC_CACHE = 'medichain-static-v1';
+const DYNAMIC_CACHE = 'medichain-dynamic-v1';
 
 const STATIC_ASSETS = [
   '/',
@@ -149,7 +149,7 @@ const doBackgroundSync = async () => {
 // Push notifications
 self.addEventListener('push', (event) => {
   const options = {
-    body: event.data ? event.data.text() : 'New notification from Healthcare Drips',
+    body: event.data ? event.data.text() : 'New notification from MediChain',
     icon: '/icons/icon-192x192.png',
     badge: '/icons/icon-96x96.png',
     vibrate: [100, 50, 100],
@@ -172,7 +172,7 @@ self.addEventListener('push', (event) => {
   };
   
   event.waitUntil(
-    self.registration.showNotification('Healthcare Drips', options)
+    self.registration.showNotification('MediChain', options)
   );
 });
 
@@ -190,7 +190,7 @@ self.addEventListener('notificationclick', (event) => {
 // IndexedDB helpers for offline actions
 const getPendingActions = async () => {
   return new Promise((resolve, reject) => {
-    const request = indexedDB.open('HealthcareDripsDB', 1);
+    const request = indexedDB.open('MediChainDB', 1);
     
     request.onerror = () => reject(request.error);
     request.onsuccess = () => {
@@ -212,7 +212,7 @@ const getPendingActions = async () => {
 
 const removePendingAction = async (id) => {
   return new Promise((resolve, reject) => {
-    const request = indexedDB.open('HealthcareDripsDB', 1);
+    const request = indexedDB.open('MediChainDB', 1);
     
     request.onerror = () => reject(request.error);
     request.onsuccess = () => {

@@ -102,7 +102,7 @@ This change reflects the platform's evolution from **Ethereum-based** to **Stell
 - **Build Script**: scripts/build.sh
 - **Deploy Script**: scripts/deploy.sh
 - **Test Suite**: src/tests.rs
-- **Contract**: src/healthcare_drips.rs
+- **Contract**: src/medichain_platform.rs
 
 ## 📱 Frontend Integration
 

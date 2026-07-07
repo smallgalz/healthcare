@@ -308,7 +308,7 @@ deployments/
   "contract_id": "CA7QYNF7PEFK4Z5L...",
   "admin_address": "GBU7VTAX3...",
   "artifact_sha256": "def456ghi789...",
-  "artifact_path": "target/wasm32v1-none/release/healthcare_drips.wasm"
+  "artifact_path": "target/wasm32v1-none/release/medichain.wasm"
 }
 ```
 

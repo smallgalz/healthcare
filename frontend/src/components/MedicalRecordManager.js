@@ -316,7 +316,7 @@ const MedicalRecordManager = ({ account, contract }) => {
         <div>
           <h2 className="text-3xl font-bold text-gray-900">Insurance Claims</h2>
           <p className="text-gray-500 text-sm mt-1">
-            Fetched live from the HealthcareDrips Soroban contract
+            Fetched live from the MediChain Soroban contract
           </p>
         </div>
 

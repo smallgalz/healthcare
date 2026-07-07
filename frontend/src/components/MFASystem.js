@@ -51,7 +51,7 @@ const MFASystem = ({ account, contract }) => {
 
   const startSetup = () => {
     const secret = authenticator.generateSecret();
-    const uri = authenticator.keyuri(account, 'HealthcareDrips', secret);
+    const uri = authenticator.keyuri(account, 'MediChain', secret);
     setSetupData({ secret, uri });
     setShowWizard(true);
     setStep(1);

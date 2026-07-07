@@ -391,7 +391,7 @@ pub struct RateLimitMetrics {
 let allowed = RateLimiter::check_rate_limit(&env, user_address, Some(symbol_short!("CLAIMS")))?;
 if !allowed {
     // Handle rate limit exceeded
-    return Err(HealthcareDripsError::RateLimitExceeded.into());
+    return Err(MediChainPlatformError::RateLimitExceeded.into());
 }
 ```
 

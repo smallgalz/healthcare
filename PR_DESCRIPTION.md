@@ -176,7 +176,7 @@ allocations.push_back(TokenAllocation {
     min_balance: 400,
 });
 
-let drip_id = HealthcareDrips::create_premium_drip(
+let drip_id = MediChainPlatform::create_premium_drip(
     &env,
     patient_address,
     insurer_address,
@@ -191,7 +191,7 @@ let drip_id = HealthcareDrips::create_premium_drip(
 
 ### Processing Multi-Token Payment
 ```rust
-HealthcareDrips::process_multi_token_premium_payment(
+MediChainPlatform::process_multi_token_premium_payment(
     &env,
     drip_id,
     insurer_address,

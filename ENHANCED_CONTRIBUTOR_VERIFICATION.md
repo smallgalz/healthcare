@@ -231,7 +231,7 @@ pub fn submit_kyc_verification(
     document_number: String,
     ipfs_hash: String,
     caller: Address,
-) -> Result<u64, HealthcareDripsError>
+) -> Result<u64, MediChainPlatformError>
 
 // License Verification
 pub fn submit_professional_license(
@@ -243,14 +243,14 @@ pub fn submit_professional_license(
     expiry_date: u64,
     ipfs_hash: String,
     caller: Address,
-) -> Result<u64, HealthcareDripsError>
+) -> Result<u64, MediChainPlatformError>
 
 // Reputation Decay
 pub fn apply_reputation_decay(
     env: &Env,
     contributor: Address,
     caller: Address,
-) -> Result<(), HealthcareDripsError>
+) -> Result<(), MediChainPlatformError>
 ```
 
 ## Database Schema

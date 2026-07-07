@@ -122,7 +122,7 @@ cd frontend && npm test -- --coverage
 medichain/
 ├── contracts/
 │   ├── src/
-│   │   ├── HealthcareDrips.sol     # Main contract
+│   │   ├── MedichainPlatform.sol    # Main contract
 │   │   └── ContributorToken.sol    # Governance token
 │   └── test/                     # Contract tests
 ├── frontend/

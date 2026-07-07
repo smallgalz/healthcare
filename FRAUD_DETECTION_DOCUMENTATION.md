@@ -86,12 +86,12 @@ Detects anomalies in claim patterns.
 #### `detect_timing_anomaly(env, patient, current_time) -> bool`
 Detects timing-based anomalies.
 
-#### `flag_high_risk_claims(env, issue_id) -> Result<(), HealthcareDripsError>`
+#### `flag_high_risk_claims(env, issue_id) -> Result<(), MediChainPlatformError>`
 Automatically flags high-risk claims for review.
 
 ### Configuration Functions
 
-#### `update_fraud_thresholds(env, thresholds, caller) -> Result<(), HealthcareDripsError>`
+#### `update_fraud_thresholds(env, thresholds, caller) -> Result<(), MediChainPlatformError>`
 Updates fraud detection thresholds (admin only).
 
 ### Query Functions
@@ -102,7 +102,7 @@ Retrieves fraud analysis for a specific claim.
 #### `get_flagged_claims(env) -> Vec<u64>`
 Gets all claims requiring manual review.
 
-#### `remove_flagged_claim(env, issue_id, caller) -> Result<(), HealthcareDripsError>`
+#### `remove_flagged_claim(env, issue_id, caller) -> Result<(), MediChainPlatformError>`
 Removes claim from flagged list after review (reviewer only).
 
 ## Integration Points
@@ -228,7 +228,7 @@ Comprehensive test suite includes:
 
 ```rust
 // Analyze a claim for fraud
-let analysis = healthcare_drips::analyze_claim_fraud(&env, issue_id)?;
+let analysis = medichain_platform::analyze_claim_fraud(&env, issue_id)?;
 
 match analysis.risk_level {
     FraudRiskLevel::Low => println!("Low risk claim"),
@@ -251,17 +251,17 @@ let new_thresholds = FraudThresholds {
     pattern_penalty: 32,
 };
 
-healthcare_drips::update_fraud_thresholds(&env, new_thresholds, admin_address)?;
+medichain_platform::update_fraud_thresholds(&env, new_thresholds, admin_address)?;
 ```
 
 ### Review Flagged Claims
 
 ```rust
 // Get all flagged claims
-let flagged_claims = healthcare_drips::get_flagged_claims(&env);
+let flagged_claims = medichain_platform::get_flagged_claims(&env);
 
 for claim_id in flagged_claims {
-    let analysis = healthcare_drips::get_fraud_analysis(&env, claim_id)?;
+    let analysis = medichain_platform::get_fraud_analysis(&env, claim_id)?;
     println!("Claim {}: Risk Score {}, Flags: {:?}", 
              claim_id, analysis.risk_score, analysis.flags);
 }

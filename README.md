@@ -51,7 +51,7 @@ MediChain revolutionizes healthcare insurance by combining:
 ```
 medichain-platform/
 ├── 📦 src/                           # Stellar/Soroban smart contracts (Rust)
-│   ├── healthcare_drips.rs           # Main contract - premiums & governance
+│   ├── medichain_platform.rs        # Main contract - premiums & governance
 │   ├── dynamic_premium_adjustment.rs # AI-driven premium calculations
 │   ├── parametric_insurance.rs       # Parametric insurance policies
 │   ├── multi_token_tests.rs          # Multi-token test suite
@@ -249,7 +249,7 @@ npm run initialize:premium   # Set up premium adjustment data
 
 ```
 src/
-├── healthcare_drips.rs           # Main contract: premiums, issues, governance
+├── medichain_platform.rs        # Main contract: premiums, issues, governance
 ├── dynamic_premium_adjustment.rs # AI-driven premium calculations on-chain
 ├── parametric_insurance.rs       # Parametric insurance with oracle triggers
 ├── rate_limiting.rs              # Rate limiting for contract operations
@@ -368,7 +368,7 @@ The backend exposes a RESTful API at `http://localhost:5000/api/`. Key endpoints
 ### 1. Insurance Premium Drips
 ```rust
 // Create recurring premium payment (Rust contract)
-HealthcareDrips::create_premium_drip(
+MediChainPlatform::create_premium_drip(
     &env,
     patient_address,
     insurer_address,
@@ -381,7 +381,7 @@ HealthcareDrips::create_premium_drip(
 ### 2. Contributor Issue Funding
 ```rust
 // Create medical treatment funding request
-HealthcareDrips::create_issue(
+MediChainPlatform::create_issue(
     &env,
     patient_address,
     IssueType::Surgery,
