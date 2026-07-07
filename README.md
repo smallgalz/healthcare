@@ -2,7 +2,7 @@
 
 A comprehensive Web3 healthcare platform built on **Stellar/Soroban** that enables **recurring insurance premium payments**, **AI-driven risk assessment**, **multi-token support**, and **contributor-driven governance** for medical insurance claims.
 
-[![CI/CD Pipeline](https://github.com/sandrawillow001-afk/medichain-platform/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/sandrawillow001-afk/medichain-platform/actions/workflows/ci-cd.yml)
+[![CI/CD Pipeline](https://github.com/smallgalz/healthcare/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/smallgalz/healthcare/actions/workflows/ci-cd.yml)
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Deployed-blue.svg)](https://smallgalz.github.io/healthcare/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
@@ -190,7 +190,7 @@ medichain-platform/
 ### 1. Clone & Install Backend
 
 ```bash
-git clone https://github.com/sandrawillow001-afk/medichain-platform.git
+git clone https://github.com/smallgalz/healthcare.git
 cd medichain-platform
 
 # Backend setup
@@ -574,7 +574,7 @@ The repository includes a comprehensive [CI/CD pipeline](.github/workflows/ci-cd
 ## 🤝 Contributing
 
 [![Contributing Guide](https://img.shields.io/badge/Contributing-Guide-blue.svg)](docs/CONTRIBUTING.md)
-[![CI Status](https://github.com/sandrawillow001-afk/medichain-platform/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/sandrawillow001-afk/medichain-platform/actions/workflows/ci-cd.yml)
+[![CI Status](https://github.com/smallgalz/healthcare/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/smallgalz/healthcare/actions/workflows/ci-cd.yml)
 
 We welcome contributions from the community!
 
@@ -599,7 +599,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🔗 Links
 
-- **GitHub**: [github.com/sandrawillow001-afk/medichain-platform](https://github.com/sandrawillow001-afk/medichain-platform)
+- **GitHub**: [github.com/smallgalz/healthcare](https://github.com/smallgalz/healthcare)
 - **Stellar Docs**: [soroban.stellar.org/docs](https://soroban.stellar.org/docs/)
 - **Soroban SDK**: [github.com/stellar/rs-soroban-sdk](https://github.com/stellar/rs-soroban-sdk)
 - **Freighter Wallet**: [freighter.app](https://freighter.app/)
