@@ -81,8 +81,6 @@ jobs:
 
       - name: Build Web-client
         working-directory: Web-client
-        env:
-          CI: false
         run: |
           PUBLIC_URL=/healthcare/web-client/ npm run build
           # SPA fallback for sub-path
