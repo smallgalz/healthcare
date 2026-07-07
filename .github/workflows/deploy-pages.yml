@@ -1,0 +1,98 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  build-and-deploy:
+    name: Build both frontends and deploy to Pages
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      # ── Modern Frontend (root) ──────────────────────────────────
+      - name: Cache modern frontend dependencies
+        uses: actions/cache@v4
+        id: cache-frontend
+        with:
+          path: frontend/node_modules
+          key: ${{ runner.os }}-node-modules-frontend-${{ hashFiles('frontend/package-lock.json', 'frontend/package.json') }}
+
+      - name: Install modern frontend dependencies
+        working-directory: frontend
+        if: steps.cache-frontend.outputs.cache-hit != 'true'
+        run: npm install
+
+      - name: Build modern frontend
+        working-directory: frontend
+        run: |
+          PUBLIC_URL=/medichain-platform/ npm run build
+          # SPA fallback — GitHub Pages serves 404.html for unknown paths
+          cp build/index.html build/404.html
+
+      - name: Copy modern frontend to deployment directory
+        run: |
+          mkdir -p _site
+          cp -r frontend/build/* _site/
+
+      # ── Web-client (sub-path /web-client/) ──────────────────────
+      - name: Cache Web-client dependencies
+        uses: actions/cache@v4
+        id: cache-web-client
+        with:
+          path: Web-client/node_modules
+          key: ${{ runner.os }}-node-modules-web-client-${{ hashFiles('Web-client/package-lock.json', 'Web-client/package.json') }}
+
+      - name: Install Web-client dependencies
+        working-directory: Web-client
+        if: steps.cache-web-client.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Build Web-client
+        working-directory: Web-client
+        run: |
+          PUBLIC_URL=/medichain-platform/web-client/ npm run build
+          # SPA fallback for sub-path
+          cp build/index.html build/404.html
+
+      - name: Copy Web-client to deployment directory
+        run: |
+          mkdir -p _site/web-client
+          cp -r Web-client/build/* _site/web-client/
+
+      # ── Upload & Deploy ─────────────────────────────────────────
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

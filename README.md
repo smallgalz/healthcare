@@ -3,6 +3,7 @@
 A comprehensive Web3 healthcare platform built on **Stellar/Soroban** that enables **recurring insurance premium payments**, **AI-driven risk assessment**, **multi-token support**, and **contributor-driven governance** for medical insurance claims.
 
 [![CI/CD Pipeline](https://github.com/sandrawillow001-afk/medichain-platform/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/sandrawillow001-afk/medichain-platform/actions/workflows/ci-cd.yml)
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Deployed-blue.svg)](https://sandrawillow001-afk.github.io/medichain-platform/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ---
@@ -571,6 +572,9 @@ The repository includes a comprehensive [CI/CD pipeline](.github/workflows/ci-cd
 ---
 
 ## 🤝 Contributing
+
+[![Contributing Guide](https://img.shields.io/badge/Contributing-Guide-blue.svg)](docs/CONTRIBUTING.md)
+[![CI Status](https://github.com/sandrawillow001-afk/medichain-platform/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/sandrawillow001-afk/medichain-platform/actions/workflows/ci-cd.yml)
 
 We welcome contributions from the community!
 
