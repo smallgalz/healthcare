@@ -3,7 +3,7 @@ use soroban_sdk::{Address, Env, Symbol, Vec, String, Map, contracttype, contract
 #[contracttype]
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
 #[repr(u32)]
-pub enum HealthcareDripsError {
+pub enum MediChainPlatformError {
     Unauthorized = 1,
     InvalidInput = 2,
     NotFound = 3,
@@ -15,14 +15,14 @@ pub enum HealthcareDripsError {
     SlippageExceeded = 9,
 }
 
-impl From<HealthcareDripsError> for Error {
-    fn from(val: HealthcareDripsError) -> Self {
+impl From<MediChainPlatformError> for Error {
+    fn from(val: MediChainPlatformError) -> Self {
         Error::from_contract_error(val as u32)
     }
 }
 
-impl<'a> From<&'a HealthcareDripsError> for Error {
-    fn from(val: &'a HealthcareDripsError) -> Self {
+impl<'a> From<&'a MediChainPlatformError> for Error {
+    fn from(val: &'a MediChainPlatformError) -> Self {
         Error::from_contract_error(*val as u32)
     }
 }
@@ -227,21 +227,21 @@ pub struct InsuranceClaim {
     pub payout_at: Option<u64>,
 }
 
-pub struct HealthcareDrips;
+pub struct MediChainPlatform;
 
-pub struct HealthcareDripsClient<'a> {
+pub struct MediChainPlatformClient<'a> {
     env: &'a Env,
     address: Address,
 }
 
-impl<'a> HealthcareDripsClient<'a> {
+impl<'a> MediChainPlatformClient<'a> {
     pub fn new(env: &'a Env, address: Address) -> Self {
         Self { env, address }
     }
 }
 
 #[contractimpl]
-impl HealthcareDrips {
+impl MediChainPlatform {
     pub fn initialize(env: &Env, admin: Address) {
         if env.storage().instance().has(&symbol_short!("INIT")) {
             panic!("Contract already initialized");
@@ -287,7 +287,7 @@ impl HealthcareDrips {
         document_number: String,
         ipfs_hash: String,
         contributor: Address,
-    ) -> Result<u64, HealthcareDripsError> {
+    ) -> Result<u64, MediChainPlatformError> {
         let kyc_id = env.storage().instance().get(&symbol_short!("KYC_C")).unwrap_or(0u64) + 1;
         env.storage().instance().set(&symbol_short!("KYC_C"), &kyc_id);
 
@@ -323,18 +323,18 @@ impl HealthcareDrips {
         env: &Env,
         contributor: Address,
         reviewer: Address,
-    ) -> Result<(), HealthcareDripsError> {
+    ) -> Result<(), MediChainPlatformError> {
         Self::require_role(env, reviewer.clone(), symbol_short!("RV"))?;
 
         let kyc_key = symbol_short!("KYC");
         let kyc_map: Map<Address, KycVerification> = env.storage().instance().get(&kyc_key)
-            .ok_or(HealthcareDripsError::NotFound)?;
+            .ok_or(MediChainPlatformError::NotFound)?;
 
         let mut kyc = kyc_map.get(contributor.clone())
-            .ok_or(HealthcareDripsError::NotFound)?;
+            .ok_or(MediChainPlatformError::NotFound)?;
 
         if kyc.status != KycStatus::Pending {
-            return Err(HealthcareDripsError::InvalidStatus);
+            return Err(MediChainPlatformError::InvalidStatus);
         }
 
         kyc.status = KycStatus::Approved;
@@ -361,7 +361,7 @@ impl HealthcareDrips {
         expiry_date: u64,
         verification_code: String,
         ipfs_hash: String,
-    ) -> Result<u64, HealthcareDripsError> {
+    ) -> Result<u64, MediChainPlatformError> {
         let license_id = env.storage().instance().get(&symbol_short!("LIC_C")).unwrap_or(0u64) + 1;
         env.storage().instance().set(&symbol_short!("LIC_C"), &license_id);
 
@@ -398,18 +398,18 @@ impl HealthcareDrips {
         contributor: Address,
         license_id: u64,
         verifier: Address,
-    ) -> Result<(), HealthcareDripsError> {
+    ) -> Result<(), MediChainPlatformError> {
         Self::require_role(env, verifier.clone(), symbol_short!("RV"))?;
 
         let lic_key = symbol_short!("LICENSE");
         let lic_map: Map<Address, Vec<ProfessionalLicense>> = env.storage().instance().get(&lic_key)
-            .ok_or(HealthcareDripsError::NotFound)?;
+            .ok_or(MediChainPlatformError::NotFound)?;
 
         let mut licenses = lic_map.get(contributor.clone())
-            .ok_or(HealthcareDripsError::NotFound)?;
+            .ok_or(MediChainPlatformError::NotFound)?;
 
         let license_index = licenses.iter().position(|l| l.id == license_id)
-            .ok_or(HealthcareDripsError::NotFound)?;
+            .ok_or(MediChainPlatformError::NotFound)?;
 
         let mut license = licenses.get(license_index.try_into().unwrap()).unwrap();
         license.status = LicenseStatus::Verified;
@@ -428,16 +428,16 @@ impl HealthcareDrips {
         Ok(())
     }
 
-    pub fn apply_reputation_decay(env: &Env, contributor: Address) -> Result<(), HealthcareDripsError> {
+    pub fn apply_reputation_decay(env: &Env, contributor: Address) -> Result<(), MediChainPlatformError> {
         let stats_key = symbol_short!("STATS");
         let stats_map: Map<Address, ContributorStats> = env.storage().instance().get(&stats_key)
-            .ok_or(HealthcareDripsError::NotFound)?;
+            .ok_or(MediChainPlatformError::NotFound)?;
 
         let mut stats = stats_map.get(contributor.clone())
-            .ok_or(HealthcareDripsError::NotFound)?;
+            .ok_or(MediChainPlatformError::NotFound)?;
 
         if stats.monthly_decay_applied {
-            return Err(HealthcareDripsError::AlreadyExists);
+            return Err(MediChainPlatformError::AlreadyExists);
         }
 
         // Apply 5% monthly decay
@@ -461,7 +461,7 @@ impl HealthcareDrips {
         amount: u64,
         description: String,
         evidence_ipfs: Vec<String>,
-    ) -> Result<u64, HealthcareDripsError> {
+    ) -> Result<u64, MediChainPlatformError> {
         let claim_id = env.storage().instance().get(&symbol_short!("CLAIM_C")).unwrap_or(0u64) + 1;
         env.storage().instance().set(&symbol_short!("CLAIM_C"), &claim_id);
 
@@ -652,14 +652,14 @@ impl HealthcareDrips {
         skip_holidays: bool,
         auto_advance: bool,
         token_allocations: Vec<TokenAllocation>,
-    ) -> Result<u64, HealthcareDripsError> {
+    ) -> Result<u64, MediChainPlatformError> {
         let drip_id = env.storage().instance().get(&symbol_short!("DRIP_C")).unwrap_or(0u64) + 1;
         env.storage().instance().set(&symbol_short!("DRIP_C"), &drip_id);
 
         // Validate token allocations sum to 100%
         let total_percentage: u64 = token_allocations.iter().map(|ta| ta.percentage).sum();
         if total_percentage != 100 {
-            return Err(HealthcareDripsError::InvalidInput);
+            return Err(MediChainPlatformError::InvalidInput);
         }
 
         let next_payment_date = if calendar_based {
@@ -698,24 +698,24 @@ impl HealthcareDrips {
         Ok(drip_id)
     }
 
-    pub fn process_premium_payment(env: &Env, drip_id: u64, payer: Address) -> Result<(), HealthcareDripsError> {
+    pub fn process_premium_payment(env: &Env, drip_id: u64, payer: Address) -> Result<(), MediChainPlatformError> {
         let drip_key = symbol_short!("DRIP");
         let drip_map: Map<u64, PremiumDrip> = env.storage().instance().get(&drip_key)
-            .ok_or(HealthcareDripsError::NotFound)?;
+            .ok_or(MediChainPlatformError::NotFound)?;
 
         let mut drip = drip_map.get(drip_id)
-            .ok_or(HealthcareDripsError::NotFound)?;
+            .ok_or(MediChainPlatformError::NotFound)?;
 
         if drip.policy_holder != payer {
-            return Err(HealthcareDripsError::Unauthorized);
+            return Err(MediChainPlatformError::Unauthorized);
         }
 
         if !drip.active {
-            return Err(HealthcareDripsError::InvalidStatus);
+            return Err(MediChainPlatformError::InvalidStatus);
         }
 
         if env.ledger().timestamp() < drip.next_payment_date {
-            return Err(HealthcareDripsError::InvalidInput);
+            return Err(MediChainPlatformError::InvalidInput);
         }
 
         // Process multi-token payment
@@ -724,7 +724,7 @@ impl HealthcareDrips {
             
             // Check token balance
             if !Self::check_token_balance(env, payer.clone(), &allocation.token_address, amount) {
-                return Err(HealthcareDripsError::InsufficientBalance);
+                return Err(MediChainPlatformError::InsufficientBalance);
             }
 
             // Convert through Stellar DEX if needed
@@ -755,20 +755,20 @@ impl HealthcareDrips {
         Ok(())
     }
 
-    pub fn skip_payment(env: &Env, drip_id: u64, policy_holder: Address) -> Result<(), HealthcareDripsError> {
+    pub fn skip_payment(env: &Env, drip_id: u64, policy_holder: Address) -> Result<(), MediChainPlatformError> {
         let drip_key = symbol_short!("DRIP");
         let drip_map: Map<u64, PremiumDrip> = env.storage().instance().get(&drip_key)
-            .ok_or(HealthcareDripsError::NotFound)?;
+            .ok_or(MediChainPlatformError::NotFound)?;
 
         let mut drip = drip_map.get(drip_id)
-            .ok_or(HealthcareDripsError::NotFound)?;
+            .ok_or(MediChainPlatformError::NotFound)?;
 
         if drip.policy_holder != policy_holder {
-            return Err(HealthcareDripsError::Unauthorized);
+            return Err(MediChainPlatformError::Unauthorized);
         }
 
         if !drip.auto_advance {
-            return Err(HealthcareDripsError::InvalidInput);
+            return Err(MediChainPlatformError::InvalidInput);
         }
 
         // Calculate next payment date
@@ -790,16 +790,16 @@ impl HealthcareDrips {
         Ok(())
     }
 
-    pub fn advance_payment(env: &Env, drip_id: u64, policy_holder: Address) -> Result<(), HealthcareDripsError> {
+    pub fn advance_payment(env: &Env, drip_id: u64, policy_holder: Address) -> Result<(), MediChainPlatformError> {
         let drip_key = symbol_short!("DRIP");
         let drip_map: Map<u64, PremiumDrip> = env.storage().instance().get(&drip_key)
-            .ok_or(HealthcareDripsError::NotFound)?;
+            .ok_or(MediChainPlatformError::NotFound)?;
 
         let drip = drip_map.get(drip_id)
-            .ok_or(HealthcareDripsError::NotFound)?;
+            .ok_or(MediChainPlatformError::NotFound)?;
 
         if drip.policy_holder != policy_holder {
-            return Err(HealthcareDripsError::Unauthorized);
+            return Err(MediChainPlatformError::Unauthorized);
         }
 
         // Process payment immediately
@@ -809,10 +809,10 @@ impl HealthcareDrips {
     }
 
     // Helper Functions
-    fn require_role(env: &Env, user: Address, role: Symbol) -> Result<(), HealthcareDripsError> {
+    fn require_role(env: &Env, user: Address, role: Symbol) -> Result<(), MediChainPlatformError> {
         let role_user: Option<Address> = env.storage().instance().get(&role);
         if role_user != Some(user) {
-            return Err(HealthcareDripsError::Unauthorized);
+            return Err(MediChainPlatformError::Unauthorized);
         }
         Ok(())
     }
@@ -999,7 +999,7 @@ impl HealthcareDrips {
         true
     }
 
-    fn convert_through_dex(env: &Env, token: &Address, amount: u64, slippage_tolerance: u64) -> Result<u64, HealthcareDripsError> {
+    fn convert_through_dex(env: &Env, token: &Address, amount: u64, slippage_tolerance: u64) -> Result<u64, MediChainPlatformError> {
         // Simplified DEX conversion - implement actual Stellar DEX integration in production
         // Apply slippage protection
         let min_output = amount * (100 - slippage_tolerance) / 100;
@@ -1007,35 +1007,35 @@ impl HealthcareDrips {
     }
 
     // Getter Functions
-    pub fn get_kyc_verification(env: &Env, contributor: Address) -> Result<KycVerification, HealthcareDripsError> {
+    pub fn get_kyc_verification(env: &Env, contributor: Address) -> Result<KycVerification, MediChainPlatformError> {
         let kyc_key = symbol_short!("KYC");
         let kyc_map: Map<Address, KycVerification> = env.storage().instance().get(&kyc_key)
-            .ok_or(HealthcareDripsError::NotFound)?;
+            .ok_or(MediChainPlatformError::NotFound)?;
 
-        kyc_map.get(contributor).ok_or(HealthcareDripsError::NotFound)
+        kyc_map.get(contributor).ok_or(MediChainPlatformError::NotFound)
     }
 
-    pub fn get_contributor_stats(env: &Env, contributor: Address) -> Result<ContributorStats, HealthcareDripsError> {
+    pub fn get_contributor_stats(env: &Env, contributor: Address) -> Result<ContributorStats, MediChainPlatformError> {
         let stats_key = symbol_short!("STATS");
         let stats_map: Map<Address, ContributorStats> = env.storage().instance().get(&stats_key)
-            .ok_or(HealthcareDripsError::NotFound)?;
+            .ok_or(MediChainPlatformError::NotFound)?;
 
-        stats_map.get(contributor).ok_or(HealthcareDripsError::NotFound)
+        stats_map.get(contributor).ok_or(MediChainPlatformError::NotFound)
     }
 
-    pub fn get_insurance_claim(env: &Env, claim_id: u64) -> Result<InsuranceClaim, HealthcareDripsError> {
+    pub fn get_insurance_claim(env: &Env, claim_id: u64) -> Result<InsuranceClaim, MediChainPlatformError> {
         let claim_key = symbol_short!("CLAIM");
         let claim_map: Map<u64, InsuranceClaim> = env.storage().instance().get(&claim_key)
-            .ok_or(HealthcareDripsError::NotFound)?;
+            .ok_or(MediChainPlatformError::NotFound)?;
 
-        claim_map.get(claim_id).ok_or(HealthcareDripsError::NotFound)
+        claim_map.get(claim_id).ok_or(MediChainPlatformError::NotFound)
     }
 
-    pub fn get_premium_drip(env: &Env, drip_id: u64) -> Result<PremiumDrip, HealthcareDripsError> {
+    pub fn get_premium_drip(env: &Env, drip_id: u64) -> Result<PremiumDrip, MediChainPlatformError> {
         let drip_key = symbol_short!("DRIP");
         let drip_map: Map<u64, PremiumDrip> = env.storage().instance().get(&drip_key)
-            .ok_or(HealthcareDripsError::NotFound)?;
+            .ok_or(MediChainPlatformError::NotFound)?;
 
-        drip_map.get(drip_id).ok_or(HealthcareDripsError::NotFound)
+        drip_map.get(drip_id).ok_or(MediChainPlatformError::NotFound)
     }
 }

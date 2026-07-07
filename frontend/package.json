@@ -1,7 +1,7 @@
 {
-  "name": "healthcare-drips-frontend",
+  "name": "medichain-frontend",
   "version": "1.0.0",
-  "description": "Modern healthcare insurance platform with recurring payments",
+  "description": "MediChain Frontend - Modern blockchain healthcare insurance platform with recurring payments and contributor governance",
   "private": true,
   "dependencies": {
     "@openzeppelin/contracts": "^4.8.0",

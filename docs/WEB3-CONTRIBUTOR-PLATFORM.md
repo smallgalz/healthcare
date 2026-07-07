@@ -1,14 +1,14 @@
-# 🌟 Healthcare Drips - Web3 Contributor Platform
+# 🌟 MediChain - Web3 Contributor Platform
 
 ## 🎯 Platform Overview
 
-Healthcare Drips is a **Web3 decentralized platform** that enables contributors worldwide to participate in healthcare insurance funding through **Stellar blockchain technology**. Contributors can review, approve, and fund medical treatment requests while earning rewards.
+MediChain is a **Web3 decentralized platform** that enables contributors worldwide to participate in healthcare insurance funding through **Stellar blockchain technology**. Contributors can review, approve, and fund medical treatment requests while earning rewards.
 
 ## 🏗️ Platform Architecture
 
 ### **🌐 Web3 Components**
 ```
-Healthcare Drips Web3 Platform
+MediChain Web3 Platform
 ├── 🏥 Smart Contracts (Stellar/Soroban)
 │   ├── Premium Drips Management
 │   ├── Issue Creation & Management
@@ -171,7 +171,7 @@ Healthcare Drips Web3 Platform
 ### **🌐 Platform Access**
 
 #### **Web Application**
-- **URL**: https://healthcare-drips-stellar.vercel.app
+- **URL**: *Coming soon*
 - **Features**: Full platform functionality
 - **Wallet**: Freighter integration
 - **Mobile**: Responsive design
@@ -523,7 +523,7 @@ import { TouchID } from 'react-native-touch-id';
 
 ---
 
-## 🎉 Join the Healthcare Drips Revolution!
+## 🎉 Join the MediChain Revolution!
 
 ### **🚀 Get Started Today**
 1. **Setup Wallet**: Install Freighter wallet
@@ -533,19 +533,18 @@ import { TouchID } from 'react-native-touch-id';
 5. **Shape Healthcare**: Participate in platform governance
 
 ### **🔗 Platform Links**
-- **GitHub**: https://github.com/akordavid373/Rishabh42-HealthCare-Insurance-Stellar
-- **Web App**: https://healthcare-drips-stellar.vercel.app
-- **Documentation**: https://docs.healthcare-drips-stellar.com
-- **Community**: https://discord.gg/healthcare-drips
+- **GitHub**: https://github.com/sandrawillow001-afk/medichain-platform
+- **Web App**: *Coming soon*
+- **Documentation**: *Coming soon*
+- **Community**: https://discord.gg/medichain
 
 ### **📞 Contact & Support**
-- **Email**: support@healthcare-drips-stellar.com
-- **Discord**: https://discord.gg/healthcare-drips
-- **Twitter**: @HealthcareDrips
-- **Telegram**: https://t.me/healthcare-drips
+- **GitHub Issues**: Open a GitHub issue for support
+- **Discord**: https://discord.gg/medichain
+- **GitHub Discussions**: https://github.com/sandrawillow001-afk/medichain-platform/discussions
 
 ---
 
 **Join us in revolutionizing healthcare insurance through Web3 technology! Together, we can make healthcare more accessible, affordable, and transparent for everyone.** 🌟💫
 
-**Healthcare Drips - Where Web3 meets Healthcare Innovation!** 🚀
+**MediChain - Where Web3 meets Healthcare Innovation!** 🚀

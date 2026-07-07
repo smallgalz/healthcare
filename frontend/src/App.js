@@ -348,7 +348,7 @@ function App() {
         <div className="header-content">
           <div className="logo">
             <Heart className="w-8 h-8" />
-            <h1>Healthcare Drips</h1>
+            <h1>MediChain</h1>
           </div>
           
           {/* Desktop Navigation */}
@@ -404,7 +404,7 @@ function App() {
           <div className="connect-prompt">
             <AlertCircle className="w-12 h-12" />
             <h2>Connect Your Wallet</h2>
-            <p>Please connect your MetaMask wallet to access the Healthcare Drips platform</p>
+            <p>Please connect your MetaMask wallet to access the MediChain platform</p>
           </div>
         ) : (
           <>

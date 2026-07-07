@@ -224,8 +224,8 @@ class DeploymentValidator {
     try {
       // Check if database file exists for sqlite
       const dbPaths = [
-        path.join(process.cwd(), 'backend/database/healthcare.db'),
-        path.join(process.cwd(), 'backend/database/healthcare_test.db'),
+        path.join(process.cwd(), 'backend/database/medichain.db'),
+        path.join(process.cwd(), 'backend/database/medichain_test.db'),
       ];
 
       let dbFound = false;

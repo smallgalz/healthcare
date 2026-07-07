@@ -1,8 +1,8 @@
-# 👥 Healthcare Drips - Contributor Guide
+# 👥 MediChain - Contributor Guide
 
 ## 🎯 Welcome Contributors!
 
-Healthcare Drips is a **Web3 platform** where contributors like you can help fund medical treatments, review cases, and earn rewards while making a real impact on people's lives.
+MediChain is a **Web3 platform** where contributors like you can help fund medical treatments, review cases, and earn rewards while making a real impact on people's lives.
 
 ## 🚀 Quick Start
 
@@ -381,7 +381,7 @@ const signedTx = await wallet.signTransaction(transaction);
 - **Web3 Security**: Best practices for secure interactions
 
 #### **👥 Community Resources**
-- **Discord Community**: https://discord.gg/healthcare-drips
+- **Discord Community**: https://discord.gg/medichain
 - **GitHub Discussions**: Platform development discussions
 - **Knowledge Base**: FAQ and troubleshooting guides
 - **Mentorship Program**: Connect with experienced contributors
@@ -411,21 +411,21 @@ const signedTx = await wallet.signTransaction(transaction);
 ### **🚨 Emergency Procedures**
 
 #### **⚠️ Urgent Issues**
-- **Security Breach**: Report immediately to security@healthcare-drips-stellar.com
+- **Security Breach**: Create a GitHub issue (mark as security)
 - **Medical Emergency**: Contact emergency services
-- **Platform Outage**: Check status page for updates
-- **Financial Issues**: Contact support for urgent assistance
+- **Platform Outage**: Check GitHub status for updates
+- **Financial Issues**: Create a GitHub issue for urgent assistance
 
 #### **📞 Contact Information**
-- **General Support**: support@healthcare-drips-stellar.com
-- **Security**: security@healthcare-drips-stellar.com
-- **Partnerships**: partnerships@healthcare-drips-stellar.com
-- **Press**: press@healthcare-drips-stellar.com
+- **General Support**: Open a GitHub discussion
+- **Security**: Create a GitHub issue (mark as security)
+- **Partnerships**: Open a GitHub discussion
+- **Press**: Open a GitHub discussion
 
 ## 🎉 Join the Movement!
 
 ### **🚀 Your Impact**
-By contributing to Healthcare Drips, you're:
+By contributing to MediChain, you're:
 - **Saving Lives**: Helping patients get necessary medical treatment
 - **Reducing Costs**: Making healthcare more affordable
 - **Innovating Healthcare**: Pioneering Web3 healthcare solutions
@@ -450,10 +450,10 @@ By contributing to Healthcare Drips, you're:
 
 **Join us in revolutionizing healthcare through Web3 technology!**
 
-🔗 **Platform**: https://healthcare-drips-stellar.vercel.app
-📚 **Documentation**: https://docs.healthcare-drips-stellar.com
-💬 **Community**: https://discord.gg/healthcare-drips
-🐙 **GitHub**: https://github.com/akordavid373/Rishabh42-HealthCare-Insurance-Stellar
+🔗 **Platform**: *Coming soon*
+📚 **Documentation**: *Coming soon*
+💬 **Community**: https://discord.gg/medichain
+🐙 **GitHub**: https://github.com/sandrawillow001-afk/medichain-platform
 
 **Together, we can make healthcare more accessible, affordable, and transparent for everyone!** 🌟💫
 

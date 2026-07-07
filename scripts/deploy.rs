@@ -2,7 +2,7 @@ use soroban_sdk::{Address, Env, Symbol};
 use std::fs;
 use std::path::Path;
 
-/// Deploy Healthcare Drips contract to Stellar
+/// Deploy MediChain contract to Stellar
 pub struct StellarDeployer {
     env: Env,
     admin: Address,
@@ -16,7 +16,7 @@ impl StellarDeployer {
 
     /// Deploy and initialize the Healthcare Drips contract
     pub fn deploy(&self) -> Address {
-        println!("🚀 Deploying Healthcare Drips contract to Stellar...");
+        println!("🚀 Deploying MediChain contract to Stellar...");
 
         // In a real deployment, this would:
         // 1. Load the WASM file
@@ -28,7 +28,7 @@ impl StellarDeployer {
         let contract_id = Address::random(&self.env);
         
         // Initialize the contract
-        healthcare_drips::HealthcareDrips::initialize(&self.env, self.admin.clone());
+        medichain_platform::MediChainPlatform::initialize(&self.env, self.admin.clone());
 
         println!("✅ Contract deployed successfully!");
         println!("📍 Contract Address: {}", contract_id);
@@ -55,8 +55,8 @@ impl StellarDeployer {
 
 fn main() {
     // This would be the actual deployment script
-    println!("🌟 Healthcare Drips - Stellar Deployment");
-    println!("==========================================");
+    println!("🌟 MediChain - Stellar Deployment");
+    println!("===================================");
     
     // In a real implementation, this would:
     // 1. Parse command line arguments

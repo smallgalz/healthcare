@@ -1,6 +1,6 @@
-# Contributing to Healthcare Drips
+# Contributing to MediChain
 
-Thank you for your interest in contributing to Healthcare Drips! This guide will help you get started.
+Thank you for your interest in contributing to MediChain! This guide will help you get started.
 
 ## 🎯 Our Mission
 
@@ -32,8 +32,8 @@ We use GitHub Issues to track bugs and feature requests:
 
 1. **Fork the Repository**
    ```bash
-   git clone https://github.com/your-username/healthcare-drips.git
-   cd healthcare-drips
+   git clone https://github.com/your-username/medichain.git
+   cd medichain
    ```
 
 2. **Install Dependencies**
@@ -119,7 +119,7 @@ cd frontend && npm test -- --coverage
 ## 🏗️ Project Structure
 
 ```
-healthcare-drips/
+medichain/
 ├── contracts/
 │   ├── src/
 │   │   ├── HealthcareDrips.sol     # Main contract
@@ -224,9 +224,9 @@ Brief description of changes
 
 ## 📞 Getting Help
 
-- **Discord**: [Join our community](https://discord.gg/healthcare-drips)
-- **GitHub Discussions**: [Ask questions](https://github.com/your-org/healthcare-drips/discussions)
-- **Email**: security@healthcare-drips.com (for security issues only)
+- **Discord**: [Join our community](https://discord.gg/medichain)
+- **GitHub Discussions**: [Ask questions](https://github.com/sandrawillow001-afk/medichain-platform/discussions)
+- **GitHub Issues**: Open a GitHub issue for bug reports and security concerns
 
 ## 📜 License
 
@@ -234,6 +234,6 @@ By contributing, you agree that your contributions will be licensed under the MI
 
 ---
 
-**Thank you for contributing to Healthcare Drips!** 🏥💫
+**Thank you for contributing to MediChain!** 🏥💫
 
 Every contribution helps make healthcare more accessible and transparent for everyone.

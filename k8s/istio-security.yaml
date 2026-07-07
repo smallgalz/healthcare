@@ -1,8 +1,8 @@
 apiVersion: security.istio.io/v1beta1
 kind: PeerAuthentication
 metadata:
-  name: healthcare-peer-auth
-  namespace: healthcare-insurance
+  name: medichain-peer-auth
+  namespace: medichain-platform
 spec:
   mtls:
     mode: STRICT
@@ -10,16 +10,16 @@ spec:
 apiVersion: security.istio.io/v1beta1
 kind: AuthorizationPolicy
 metadata:
-  name: healthcare-authz
-  namespace: healthcare-insurance
+  name: medichain-authz
+  namespace: medichain-platform
 spec:
   selector:
     matchLabels:
-      app: healthcare-backend
+      app: medichain-backend
   rules:
   - from:
     - source:
-        principals: ["cluster.local/ns/healthcare-insurance/sa/healthcare-sa"]
+        principals: ["cluster.local/ns/medichain-platform/sa/medichain-sa"]
   - to:
     - operation:
         methods: ["GET", "POST", "PUT", "DELETE"]
@@ -27,12 +27,12 @@ spec:
 apiVersion: security.istio.io/v1beta1
 kind: AuthorizationPolicy
 metadata:
-  name: healthcare-frontend-authz
-  namespace: healthcare-insurance
+  name: medichain-frontend-authz
+  namespace: medichain-platform
 spec:
   selector:
     matchLabels:
-      app: healthcare-frontend
+      app: medichain-frontend
   rules:
   - from:
     - source:

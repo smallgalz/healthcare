@@ -10,19 +10,19 @@ COPY . .
 FROM node:18-alpine AS runtime
 
 RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nextjs -u 1001
+RUN adduser -S medichain -u 1001
 
 WORKDIR /app
 
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
-COPY --from=builder --chown=nextjs:nodejs /app/package*.json ./
-COPY --from=builder --chown=nextjs:nodejs /app/server.js ./
-COPY --from=builder --chown=nextjs:nodejs /app/database ./database
-COPY --from=builder --chown=nextjs:nodejs /app/middleware ./middleware
-COPY --from=builder --chown=nextjs:nodejs /app/routes ./routes
-COPY --from=builder --chown=nextjs:nodejs /app/services ./services
+COPY --from=builder --chown=medichain:nodejs /app/node_modules ./node_modules
+COPY --from=builder --chown=medichain:nodejs /app/package*.json ./
+COPY --from=builder --chown=medichain:nodejs /app/server.js ./
+COPY --from=builder --chown=medichain:nodejs /app/database ./database
+COPY --from=builder --chown=medichain:nodejs /app/middleware ./middleware
+COPY --from=builder --chown=medichain:nodejs /app/routes ./routes
+COPY --from=builder --chown=medichain:nodejs /app/services ./services
 
-USER nextjs
+USER medichain
 
 EXPOSE 3000
 

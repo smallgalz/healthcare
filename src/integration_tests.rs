@@ -8,7 +8,7 @@ mod tests {
     use crate::rate_limiting::{
         RateLimiter, RateLimitType, LimitScope, RateLimitMetrics, WhitelistEntry
     };
-    use crate::healthcare_drips::HealthcareDripsError;
+    use crate::medichain_platform::MediChainPlatformError;
 
     #[test]
     fn test_real_time_processing_initialization() {
@@ -21,7 +21,7 @@ mod tests {
         // Test double initialization fails
         assert!(matches!(
             RealTimeProcessor::initialize(&env, admin),
-            Err(HealthcareDripsError::AlreadyExists.into())
+            Err(MediChainPlatformError::AlreadyExists.into())
         ));
     }
 
@@ -121,7 +121,7 @@ mod tests {
         // Test double initialization fails
         assert!(matches!(
             RateLimiter::initialize(&env, admin),
-            Err(HealthcareDripsError::AlreadyExists.into())
+            Err(MediChainPlatformError::AlreadyExists.into())
         ));
     }
 

@@ -1,6 +1,6 @@
 {
-  "name": "Healthcare Drips - Medical Insurance Platform",
-  "short_name": "Healthcare Drips",
+  "name": "MediChain - Blockchain Healthcare Insurance Platform",
+  "short_name": "MediChain",
   "description": "Modern healthcare insurance platform with recurring payments and blockchain integration",
   "start_url": "/",
   "display": "standalone",

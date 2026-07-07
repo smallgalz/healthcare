@@ -33,7 +33,7 @@ class NotificationEngine extends EventEmitter {
         method,
         headers: {
           'Content-Type': 'application/json',
-          'User-Agent': 'Healthcare-Drips-CI-CD',
+          'User-Agent': 'MediChain-CI-CD',
           ...headers,
         },
       };
@@ -86,7 +86,7 @@ class NotificationEngine extends EventEmitter {
                   message.status === 'failure' ? '❌' : '⚠️';
 
     return {
-      username: 'Healthcare Drips CI/CD',
+      username: 'MediChain CI/CD',
       icon_emoji: ':rocket:',
       attachments: [
         {
@@ -120,7 +120,7 @@ class NotificationEngine extends EventEmitter {
               short: false,
             },
           ],
-          footer: 'Healthcare Drips',
+          footer: 'MediChain',
           ts: Math.floor(Date.now() / 1000),
         },
       ],

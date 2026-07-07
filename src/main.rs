@@ -1,4 +1,4 @@
-// Healthcare Drips - Soroban Smart Contract
+// MediChain - Soroban Smart Contract
 //
 // This binary entry point is intentionally minimal.
 // The contract logic lives in src/lib.rs (crate-type = ["cdylib"]).

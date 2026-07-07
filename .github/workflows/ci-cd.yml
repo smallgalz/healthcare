@@ -73,8 +73,8 @@ jobs:
       - name: Upload WASM artifact
         uses: actions/upload-artifact@v4
         with:
-          name: healthcare-wasm
-          path: target/wasm32v1-none/release/healthcare_drips.wasm
+          name: medichain-wasm
+          path: target/wasm32v1-none/release/medichain.wasm
           if-no-files-found: error
 
   security-scan:
@@ -519,7 +519,7 @@ jobs:
       - name: Download WASM artifact
         uses: actions/download-artifact@v4
         with:
-          name: healthcare-wasm
+          name: medichain-wasm
           path: target/wasm32v1-none/release
 
       - name: Install Rust toolchain
@@ -561,7 +561,7 @@ jobs:
             --commit-sha "${GITHUB_SHA}" \
             --contract-id "$(node -e "const fs=require('fs'); const m=JSON.parse(fs.readFileSync('deployment.json','utf8')); process.stdout.write(m.contract_id || m.contract_address || '')")" \
             --admin-address "$PUBLIC_KEY" \
-            --artifact-path "target/wasm32v1-none/release/healthcare_drips.wasm"
+            --artifact-path "target/wasm32v1-none/release/medichain.wasm"
 
       - name: Health check
         continue-on-error: true
@@ -604,7 +604,7 @@ jobs:
       - name: Download WASM artifact
         uses: actions/download-artifact@v4
         with:
-          name: healthcare-wasm
+          name: medichain-wasm
           path: target/wasm32v1-none/release
 
       - name: Install Rust toolchain
@@ -645,7 +645,7 @@ jobs:
             --commit-sha "${GITHUB_SHA}" \
             --contract-id "$(node -e "const fs=require('fs'); const m=JSON.parse(fs.readFileSync('deployment.json','utf8')); process.stdout.write(m.contract_id || m.contract_address || '')")" \
             --admin-address "$PUBLIC_KEY" \
-            --artifact-path "target/wasm32v1-none/release/healthcare_drips.wasm"
+            --artifact-path "target/wasm32v1-none/release/medichain.wasm"
 
       - name: Smoke tests - staging
         continue-on-error: true
@@ -688,7 +688,7 @@ jobs:
       - name: Download WASM artifact
         uses: actions/download-artifact@v4
         with:
-          name: healthcare-wasm
+          name: medichain-wasm
           path: target/wasm32v1-none/release
 
       - name: Install Rust toolchain
@@ -738,7 +738,7 @@ jobs:
             --commit-sha "${GITHUB_SHA}" \
             --contract-id "$(node -e "const fs=require('fs'); const m=JSON.parse(fs.readFileSync('deployment.json','utf8')); process.stdout.write(m.contract_id || m.contract_address || '')")" \
             --admin-address "$PUBLIC_KEY" \
-            --artifact-path "target/wasm32v1-none/release/healthcare_drips.wasm"
+            --artifact-path "target/wasm32v1-none/release/medichain.wasm"
 
       - name: Upload production manifest
         uses: actions/upload-artifact@v4
@@ -797,7 +797,7 @@ jobs:
         run: |
           echo "Building rollback artifact..."
           cargo build --target wasm32v1-none --release
-          ls -lh target/wasm32v1-none/release/healthcare_drips.wasm
+          ls -lh target/wasm32v1-none/release/medichain.wasm
 
       - name: Install Soroban CLI
         run: cargo install soroban-cli --locked
@@ -842,7 +842,7 @@ jobs:
             --commit-sha "${RELEASE_VERSION}" \
             --contract-id "$(node -e "const fs=require('fs'); const m=JSON.parse(fs.readFileSync('deployment.json','utf8')); process.stdout.write(m.contract_id || m.contract_address || '')")" \
             --admin-address "$PUBLIC_KEY" \
-            --artifact-path "target/wasm32v1-none/release/healthcare_drips.wasm" \
+            --artifact-path "target/wasm32v1-none/release/medichain.wasm" \
             --status rollback
 
       - name: Archive rollback artifacts
@@ -940,7 +940,7 @@ jobs:
             "attachments": [
               {
                 "color": "$COLOR",
-                "title": "$EMOJI Healthcare Drips CI/CD $STATUS",
+                "title": "$EMOJI MediChain CI/CD $STATUS",
                 "fields": [
                   {
                     "title": "Repository",

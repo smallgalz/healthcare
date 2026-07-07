@@ -1,8 +1,8 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: healthcare-network-policy
-  namespace: healthcare-insurance
+  name: medichain-network-policy
+  namespace: medichain-platform
 spec:
   podSelector: {}
   policyTypes:
@@ -18,7 +18,7 @@ spec:
           name: ingress-nginx
     - podSelector:
         matchLabels:
-          app: healthcare-frontend
+          app: medichain-frontend
     ports:
     - protocol: TCP
       port: 3000
@@ -48,7 +48,7 @@ spec:
   - to:
     - podSelector:
         matchLabels:
-          app: healthcare-backend
+          app: medichain-backend
     ports:
     - protocol: TCP
       port: 3000

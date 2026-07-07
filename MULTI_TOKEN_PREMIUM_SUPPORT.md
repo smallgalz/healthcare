@@ -257,7 +257,7 @@ The implementation includes comprehensive tests covering:
 
 Run tests with:
 ```bash
-cargo test --package healthcare-drips --lib multi_token_tests
+cargo test --package medichain --lib multi_token_tests
 ```
 
 ## Future Enhancements

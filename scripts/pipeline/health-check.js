@@ -228,7 +228,7 @@ async function main() {
     }
   }
 
-  console.log(`🏥 Healthcare Drips - Deployment Health Check`);
+  console.log(`🏥 MediChain - Deployment Health Check`);
   console.log(`🌐 Target: ${options.baseUrl}`);
 
   const checker = new HealthChecker(options);

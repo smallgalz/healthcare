@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document describes the implementation of a comprehensive real-time data processing pipeline for the Healthcare Insurance Stellar platform. The system provides stream processing, anomaly detection, real-time analytics, and alert generation capabilities.
+This document describes the implementation of a comprehensive real-time data processing pipeline for the MediChain Platform platform. The system provides stream processing, anomaly detection, real-time analytics, and alert generation capabilities.
 
 ## Features
 
@@ -225,7 +225,7 @@ Retrieve system performance metrics.
 
 ## Integration Points
 
-### Healthcare Drips Core
+### MediChain Core
 - Seamless integration with existing systems
 - Shared data structures
 - Common error handling

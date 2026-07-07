@@ -4,8 +4,8 @@ mod tests {
         contract, contractimpl, contracttype, Address, Env, Symbol, testutils, Vec, String,
     };
 
-    use crate::healthcare_drips::{
-        HealthcareDrips, HealthcareDripsError, ContributorLevel, IssueType, IssueStatus,
+    use crate::medichain_platform::{
+        MediChainPlatformError, ContributorLevel, IssueType, IssueStatus,
         FraudRiskLevel, FraudFlag, FraudThresholds,
     };
 
@@ -28,7 +28,7 @@ mod tests {
         let contributor = Address::random(&env);
 
         env.mock_all_auths();
-        HealthcareDrips::initialize(&env, admin.clone());
+        MediChainPlatform::initialize(&env, admin.clone());
 
         (env, admin, patient, insurer, reviewer, contributor)
     }
@@ -57,7 +57,7 @@ mod tests {
         let (env, admin, patient, insurer, _, _) = setup_contract();
         let token = Address::random(&env);
 
-        let result = HealthcareDrips::create_premium_drip(
+        let result = MediChainPlatform::create_premium_drip(
             &env,
             patient.clone(),
             insurer.clone(),
@@ -68,7 +68,7 @@ mod tests {
 
         assert_eq!(result, Ok(1));
 
-        let drip = HealthcareDrips::get_premium_drip(&env, 1).unwrap();
+        let drip = MediChainPlatform::get_premium_drip(&env, 1).unwrap();
         assert_eq!(drip.id, 1);
         assert_eq!(drip.patient, patient);
         assert_eq!(drip.insurer, insurer);
@@ -82,7 +82,7 @@ mod tests {
         let (env, _, patient, insurer, _, _) = setup_contract();
         let token = Address::random(&env);
 
-        let result = HealthcareDrips::create_premium_drip(
+        let result = MediChainPlatform::create_premium_drip(
             &env,
             patient,
             insurer,
@@ -91,7 +91,7 @@ mod tests {
             86400u64,
         );
 
-        assert_eq!(result, Err(HealthcareDripsError::InvalidAmount));
+        assert_eq!(result, Err(MediChainPlatformError::InvalidAmount));
     }
 
     #[test]
@@ -100,7 +100,7 @@ mod tests {
         let token = Address::random(&env);
 
         // Create drip
-        let drip_id = HealthcareDrips::create_premium_drip(
+        let drip_id = MediChainPlatform::create_premium_drip(
             &env,
             patient,
             insurer,
@@ -112,10 +112,10 @@ mod tests {
         // Mock time passing
         env.ledger().set_timestamp(env.ledger().timestamp() + 86400u64 + 1);
 
-        let result = HealthcareDrips::process_premium_payment(&env, drip_id);
+        let result = MediChainPlatform::process_premium_payment(&env, drip_id);
         assert_eq!(result, Ok(()));
 
-        let drip = HealthcareDrips::get_premium_drip(&env, drip_id).unwrap();
+        let drip = MediChainPlatform::get_premium_drip(&env, drip_id).unwrap();
         assert_eq!(drip.total_paid, 1000i128);
     }
 
@@ -123,7 +123,7 @@ mod tests {
     fn test_create_issue() {
         let (env, admin, patient, _, _, _) = setup_contract();
 
-        let result = HealthcareDrips::create_issue(
+        let result = MediChainPlatform::create_issue(
             &env,
             patient.clone(),
             IssueType::Surgery,
@@ -138,7 +138,7 @@ mod tests {
 
         assert_eq!(result, Ok(1));
 
-        let issue = HealthcareDrips::get_issue(&env, 1).unwrap();
+        let issue = MediChainPlatform::get_issue(&env, 1).unwrap();
         assert_eq!(issue.id, 1);
         assert_eq!(issue.creator, admin);
         assert_eq!(issue.patient, patient);
@@ -151,7 +151,7 @@ mod tests {
     fn test_create_issue_unauthorized() {
         let (env, _, patient, _, _, contributor) = setup_contract();
 
-        let result = HealthcareDrips::create_issue(
+        let result = MediChainPlatform::create_issue(
             &env,
             patient,
             IssueType::Surgery,
@@ -164,7 +164,7 @@ mod tests {
             contributor, // Not authorized
         );
 
-        assert_eq!(result, Err(HealthcareDripsError::Unauthorized));
+        assert_eq!(result, Err(MediChainPlatformError::Unauthorized));
     }
 
     #[test]
@@ -172,7 +172,7 @@ mod tests {
         let (env, admin, patient, _, _, _) = setup_contract();
 
         // Create issue
-        let issue_id = HealthcareDrips::create_issue(
+        let issue_id = MediChainPlatform::create_issue(
             &env,
             patient.clone(),
             IssueType::Surgery,
@@ -186,10 +186,10 @@ mod tests {
         ).unwrap();
 
         // Submit issue
-        let result = HealthcareDrips::submit_issue(&env, issue_id, patient);
+        let result = MediChainPlatform::submit_issue(&env, issue_id, patient);
         assert_eq!(result, Ok(()));
 
-        let issue = HealthcareDrips::get_issue(&env, issue_id).unwrap();
+        let issue = MediChainPlatform::get_issue(&env, issue_id).unwrap();
         assert_eq!(issue.status, IssueStatus::Submitted);
     }
 
@@ -199,7 +199,7 @@ mod tests {
 
         // First, the contributor needs to have some stats (created through application)
         // For this test, we'll manually create the stats first
-        let stats = crate::healthcare_drips::ContributorStats {
+        let stats = crate::medichain_platform::ContributorStats {
             contributor: contributor.clone(),
             total_issues_reviewed: 0,
             total_issues_approved: 0,
@@ -213,7 +213,7 @@ mod tests {
             &stats,
         );
 
-        let result = HealthcareDrips::verify_contributor(
+        let result = MediChainPlatform::verify_contributor(
             &env,
             contributor.clone(),
             ContributorLevel::Expert,
@@ -222,7 +222,7 @@ mod tests {
 
         assert_eq!(result, Ok(()));
 
-        let updated_stats = HealthcareDrips::get_contributor_stats(&env, contributor).unwrap();
+        let updated_stats = MediChainPlatform::get_contributor_stats(&env, contributor).unwrap();
         assert_eq!(updated_stats.level, ContributorLevel::Expert);
         assert!(updated_stats.reputation >= 100);
     }
@@ -232,7 +232,7 @@ mod tests {
         let (env, admin, patient, _, _, contributor) = setup_contract();
 
         // Create and submit issue
-        let issue_id = HealthcareDrips::create_issue(
+        let issue_id = MediChainPlatform::create_issue(
             &env,
             patient.clone(),
             IssueType::Surgery,
@@ -245,10 +245,10 @@ mod tests {
             admin.clone(),
         ).unwrap();
 
-        HealthcareDrips::submit_issue(&env, issue_id, patient).unwrap();
+        MediChainPlatform::submit_issue(&env, issue_id, patient).unwrap();
 
         // Verify contributor
-        let stats = crate::healthcare_drips::ContributorStats {
+        let stats = crate::medichain_platform::ContributorStats {
             contributor: contributor.clone(),
             total_issues_reviewed: 0,
             total_issues_approved: 0,
@@ -263,7 +263,7 @@ mod tests {
         );
 
         // Apply to issue
-        let result = HealthcareDrips::apply_to_issue(
+        let result = MediChainPlatform::apply_to_issue(
             &env,
             issue_id,
             String::from_str(&env, "I can help with this surgery case"),
@@ -272,7 +272,7 @@ mod tests {
 
         assert_eq!(result, Ok(()));
 
-        let application = HealthcareDrips::get_application(&env, issue_id, contributor).unwrap();
+        let application = MediChainPlatform::get_application(&env, issue_id, contributor).unwrap();
         assert_eq!(application.contributor, contributor);
         assert_eq!(application.statement, String::from_str(&env, "I can help with this surgery case"));
         assert!(!application.approved);
@@ -283,7 +283,7 @@ mod tests {
         let (env, admin, patient, _, reviewer, contributor) = setup_contract();
 
         // Create and submit issue
-        let issue_id = HealthcareDrips::create_issue(
+        let issue_id = MediChainPlatform::create_issue(
             &env,
             patient.clone(),
             IssueType::Surgery,
@@ -296,10 +296,10 @@ mod tests {
             admin.clone(),
         ).unwrap();
 
-        HealthcareDrips::submit_issue(&env, issue_id, patient).unwrap();
+        MediChainPlatform::submit_issue(&env, issue_id, patient).unwrap();
 
         // Verify contributor and apply
-        let stats = crate::healthcare_drips::ContributorStats {
+        let stats = crate::medichain_platform::ContributorStats {
             contributor: contributor.clone(),
             total_issues_reviewed: 0,
             total_issues_approved: 0,
@@ -313,7 +313,7 @@ mod tests {
             &stats,
         );
 
-        HealthcareDrips::apply_to_issue(
+        MediChainPlatform::apply_to_issue(
             &env,
             issue_id,
             String::from_str(&env, "I can help with this surgery case"),
@@ -321,7 +321,7 @@ mod tests {
         ).unwrap();
 
         // Review application positively
-        let result = HealthcareDrips::review_application(
+        let result = MediChainPlatform::review_application(
             &env,
             issue_id,
             contributor.clone(),
@@ -332,10 +332,10 @@ mod tests {
 
         assert_eq!(result, Ok(()));
 
-        let application = HealthcareDrips::get_application(&env, issue_id, contributor).unwrap();
+        let application = MediChainPlatform::get_application(&env, issue_id, contributor).unwrap();
         assert!(application.approved);
 
-        let updated_stats = HealthcareDrips::get_contributor_stats(&env, contributor).unwrap();
+        let updated_stats = MediChainPlatform::get_contributor_stats(&env, contributor).unwrap();
         assert_eq!(updated_stats.total_issues_reviewed, 1);
         assert_eq!(updated_stats.total_issues_approved, 1);
     }
@@ -345,7 +345,7 @@ mod tests {
         let (env, admin, patient, _, _, _) = setup_contract();
 
         // Create multiple issues
-        HealthcareDrips::create_issue(
+        MediChainPlatform::create_issue(
             &env,
             patient.clone(),
             IssueType::Surgery,
@@ -358,7 +358,7 @@ mod tests {
             admin.clone(),
         ).unwrap();
 
-        HealthcareDrips::create_issue(
+        MediChainPlatform::create_issue(
             &env,
             patient.clone(),
             IssueType::EmergencyTreatment,
@@ -371,7 +371,7 @@ mod tests {
             admin.clone(),
         ).unwrap();
 
-        let patient_issues = HealthcareDrips::get_patient_issues(&env, patient);
+        let patient_issues = MediChainPlatform::get_patient_issues(&env, patient);
         assert_eq!(patient_issues.len(), 2);
         assert!(patient_issues.contains(&1));
         assert!(patient_issues.contains(&2));
@@ -382,7 +382,7 @@ mod tests {
         let (env, admin, patient, _, _, _) = setup_contract();
 
         // Create and submit issue
-        let issue_id = HealthcareDrips::create_issue(
+        let issue_id = MediChainPlatform::create_issue(
             &env,
             patient.clone(),
             IssueType::Surgery,
@@ -395,9 +395,9 @@ mod tests {
             admin.clone(),
         ).unwrap();
 
-        HealthcareDrips::submit_issue(&env, issue_id, patient).unwrap();
+        MediChainPlatform::submit_issue(&env, issue_id, patient).unwrap();
 
-        let active_issues = HealthcareDrips::get_active_issues(&env);
+        let active_issues = MediChainPlatform::get_active_issues(&env);
         assert_eq!(active_issues.len(), 1);
         assert!(active_issues.contains(&1));
     }
@@ -423,7 +423,7 @@ mod tests {
         let (env, admin, patient, _, _, _) = setup_contract();
 
         // Create a normal claim
-        let issue_id = HealthcareDrips::create_issue(
+        let issue_id = MediChainPlatform::create_issue(
             &env,
             patient.clone(),
             IssueType::Surgery,
@@ -437,7 +437,7 @@ mod tests {
         ).unwrap();
 
         // Analyze for fraud
-        let analysis = HealthcareDrips::analyze_claim_fraud(&env, issue_id).unwrap();
+        let analysis = MediChainPlatform::analyze_claim_fraud(&env, issue_id).unwrap();
         
         assert_eq!(analysis.risk_level, FraudRiskLevel::Low);
         assert!(analysis.risk_score < 20);
@@ -450,7 +450,7 @@ mod tests {
         let (env, admin, patient, _, _, _) = setup_contract();
 
         // Create a high-value claim
-        let issue_id = HealthcareDrips::create_issue(
+        let issue_id = MediChainPlatform::create_issue(
             &env,
             patient.clone(),
             IssueType::Surgery,
@@ -464,7 +464,7 @@ mod tests {
         ).unwrap();
 
         // Analyze for fraud
-        let analysis = HealthcareDrips::analyze_claim_fraud(&env, issue_id).unwrap();
+        let analysis = MediChainPlatform::analyze_claim_fraud(&env, issue_id).unwrap();
         
         assert!(analysis.risk_score >= 25);
         assert!(analysis.flags.iter().any(|&flag| flag == FraudFlag::UnusualAmount));
@@ -475,7 +475,7 @@ mod tests {
         let (env, _, patient, _, _, _) = setup_contract();
 
         // Analyze claim pattern for new patient
-        let pattern = HealthcareDrips::analyze_claim_pattern(&env, patient.clone()).unwrap();
+        let pattern = MediChainPlatform::analyze_claim_pattern(&env, patient.clone()).unwrap();
         
         assert_eq!(pattern.claim_frequency, 0);
         assert_eq!(pattern.average_amount, 0);
@@ -491,7 +491,7 @@ mod tests {
 
         // Create multiple claims for the same patient
         for i in 1..=3 {
-            HealthcareDrips::create_issue(
+            MediChainPlatform::create_issue(
                 &env,
                 patient.clone(),
                 IssueType::Surgery,
@@ -506,7 +506,7 @@ mod tests {
         }
 
         // Analyze claim pattern
-        let pattern = HealthcareDrips::analyze_claim_pattern(&env, patient.clone()).unwrap();
+        let pattern = MediChainPlatform::analyze_claim_pattern(&env, patient.clone()).unwrap();
         
         assert_eq!(pattern.claim_frequency, 3);
         assert!(pattern.average_amount > 0);
@@ -521,7 +521,7 @@ mod tests {
 
         // Create a pattern of normal claims
         for i in 1..=3 {
-            HealthcareDrips::create_issue(
+            MediChainPlatform::create_issue(
                 &env,
                 patient.clone(),
                 IssueType::Surgery,
@@ -536,10 +536,10 @@ mod tests {
         }
 
         // Get pattern
-        let pattern = HealthcareDrips::analyze_claim_pattern(&env, patient.clone()).unwrap();
+        let pattern = MediChainPlatform::analyze_claim_pattern(&env, patient.clone()).unwrap();
         
         // Create a claim with significantly different amount
-        let anomaly_issue_id = HealthcareDrips::create_issue(
+        let anomaly_issue_id = MediChainPlatform::create_issue(
             &env,
             patient.clone(),
             IssueType::Surgery,
@@ -552,10 +552,10 @@ mod tests {
             admin.clone(),
         ).unwrap();
 
-        let anomaly_issue = HealthcareDrips::get_issue(&env, anomaly_issue_id).unwrap();
+        let anomaly_issue = MediChainPlatform::get_issue(&env, anomaly_issue_id).unwrap();
         
         // Detect anomaly
-        let is_anomaly = HealthcareDrips::detect_pattern_anomaly(&env, &pattern, &anomaly_issue);
+        let is_anomaly = MediChainPlatform::detect_pattern_anomaly(&env, &pattern, &anomaly_issue);
         assert!(is_anomaly); // Should detect the amount anomaly
     }
 
@@ -570,7 +570,7 @@ mod tests {
             // Set time to create claims within the same day
             env.ledger().set_timestamp(base_time + (i as u64 * 3600)); // 1 hour apart
             
-            HealthcareDrips::create_issue(
+            MediChainPlatform::create_issue(
                 &env,
                 patient.clone(),
                 IssueType::EmergencyTreatment,
@@ -585,7 +585,7 @@ mod tests {
         }
 
         // Check for timing anomaly with the last claim
-        let is_anomaly = HealthcareDrips::detect_timing_anomaly(&env, patient.clone(), base_time + 4 * 3600);
+        let is_anomaly = MediChainPlatform::detect_timing_anomaly(&env, patient.clone(), base_time + 4 * 3600);
         assert!(is_anomaly); // Should detect timing anomaly (4 claims in 4 hours)
     }
 
@@ -594,7 +594,7 @@ mod tests {
         let (env, admin, patient, _, _, _) = setup_contract();
 
         // Create a high-risk claim
-        let issue_id = HealthcareDrips::create_issue(
+        let issue_id = MediChainPlatform::create_issue(
             &env,
             patient.clone(),
             IssueType::Surgery,
@@ -608,17 +608,17 @@ mod tests {
         ).unwrap();
 
         // Try to flag the claim
-        let result = HealthcareDrips::flag_high_risk_claims(&env, issue_id);
+        let result = MediChainPlatform::flag_high_risk_claims(&env, issue_id);
         
         // Should be flagged due to high amount
-        assert_eq!(result, Err(HealthcareDripsError::ClaimFlagged));
+        assert_eq!(result, Err(MediChainPlatformError::ClaimFlagged));
         
         // Check if claim is in flagged list
-        let flagged_claims = HealthcareDrips::get_flagged_claims(&env);
+        let flagged_claims = MediChainPlatform::get_flagged_claims(&env);
         assert!(flagged_claims.contains(&issue_id));
         
         // Check if issue status was updated
-        let issue = HealthcareDrips::get_issue(&env, issue_id).unwrap();
+        let issue = MediChainPlatform::get_issue(&env, issue_id).unwrap();
         assert_eq!(issue.status, IssueStatus::UnderReview);
     }
 
@@ -627,7 +627,7 @@ mod tests {
         let (env, admin, patient, _, _, _) = setup_contract();
 
         // Create a normal claim
-        let issue_id = HealthcareDrips::create_issue(
+        let issue_id = MediChainPlatform::create_issue(
             &env,
             patient.clone(),
             IssueType::Surgery,
@@ -641,14 +641,14 @@ mod tests {
         ).unwrap();
 
         // Submit issue (should pass fraud detection)
-        let result = HealthcareDrips::submit_issue(&env, issue_id, patient.clone());
+        let result = MediChainPlatform::submit_issue(&env, issue_id, patient.clone());
         assert_eq!(result, Ok(()));
         
-        let issue = HealthcareDrips::get_issue(&env, issue_id).unwrap();
+        let issue = MediChainPlatform::get_issue(&env, issue_id).unwrap();
         assert_eq!(issue.status, IssueStatus::Submitted);
         
         // Create a high-risk claim
-        let high_risk_id = HealthcareDrips::create_issue(
+        let high_risk_id = MediChainPlatform::create_issue(
             &env,
             patient.clone(),
             IssueType::Surgery,
@@ -662,10 +662,10 @@ mod tests {
         ).unwrap();
 
         // Submit high-risk issue (should be flagged)
-        let result = HealthcareDrips::submit_issue(&env, high_risk_id, patient.clone());
+        let result = MediChainPlatform::submit_issue(&env, high_risk_id, patient.clone());
         assert_eq!(result, Ok(())); // Still succeeds but gets flagged
         
-        let high_risk_issue = HealthcareDrips::get_issue(&env, high_risk_id).unwrap();
+        let high_risk_issue = MediChainPlatform::get_issue(&env, high_risk_id).unwrap();
         assert_eq!(high_risk_issue.status, IssueStatus::UnderReview);
     }
 
@@ -683,13 +683,13 @@ mod tests {
             pattern_penalty: 35,
         };
 
-        let result = HealthcareDrips::update_fraud_thresholds(&env, new_thresholds.clone(), admin.clone());
+        let result = MediChainPlatform::update_fraud_thresholds(&env, new_thresholds.clone(), admin.clone());
         assert_eq!(result, Ok(()));
 
         // Try with unauthorized user
         let unauthorized = Address::random(&env);
-        let result = HealthcareDrips::update_fraud_thresholds(&env, new_thresholds, unauthorized);
-        assert_eq!(result, Err(HealthcareDripsError::Unauthorized));
+        let result = MediChainPlatform::update_fraud_thresholds(&env, new_thresholds, unauthorized);
+        assert_eq!(result, Err(MediChainPlatformError::Unauthorized));
     }
 
     #[test]
@@ -697,7 +697,7 @@ mod tests {
         let (env, admin, patient, _, reviewer, _) = setup_contract();
 
         // Create and flag a high-risk claim
-        let issue_id = HealthcareDrips::create_issue(
+        let issue_id = MediChainPlatform::create_issue(
             &env,
             patient.clone(),
             IssueType::Surgery,
@@ -710,24 +710,24 @@ mod tests {
             admin.clone(),
         ).unwrap();
 
-        HealthcareDrips::flag_high_risk_claims(&env, issue_id).unwrap_err(); // Expect error due to flagging
+        MediChainPlatform::flag_high_risk_claims(&env, issue_id).unwrap_err(); // Expect error due to flagging
         
         // Verify it's flagged
-        let flagged_claims = HealthcareDrips::get_flagged_claims(&env);
+        let flagged_claims = MediChainPlatform::get_flagged_claims(&env);
         assert!(flagged_claims.contains(&issue_id));
 
         // Remove from flagged list (as reviewer)
-        let result = HealthcareDrips::remove_flagged_claim(&env, issue_id, reviewer.clone());
+        let result = MediChainPlatform::remove_flagged_claim(&env, issue_id, reviewer.clone());
         assert_eq!(result, Ok(()));
 
         // Verify it's no longer flagged
-        let flagged_claims = HealthcareDrips::get_flagged_claims(&env);
+        let flagged_claims = MediChainPlatform::get_flagged_claims(&env);
         assert!(!flagged_claims.contains(&issue_id));
 
         // Try with unauthorized user
         let unauthorized = Address::random(&env);
-        let result = HealthcareDrips::remove_flagged_claim(&env, issue_id, unauthorized);
-        assert_eq!(result, Err(HealthcareDripsError::Unauthorized));
+        let result = MediChainPlatform::remove_flagged_claim(&env, issue_id, unauthorized);
+        assert_eq!(result, Err(MediChainPlatformError::Unauthorized));
     }
 
     #[test]
@@ -735,7 +735,7 @@ mod tests {
         let (env, admin, patient, _, _, _) = setup_contract();
 
         // Create a claim
-        let issue_id = HealthcareDrips::create_issue(
+        let issue_id = MediChainPlatform::create_issue(
             &env,
             patient.clone(),
             IssueType::Surgery,
@@ -749,10 +749,10 @@ mod tests {
         ).unwrap();
 
         // Analyze for fraud
-        let analysis = HealthcareDrips::analyze_claim_fraud(&env, issue_id).unwrap();
+        let analysis = MediChainPlatform::analyze_claim_fraud(&env, issue_id).unwrap();
         
         // Retrieve the analysis
-        let retrieved_analysis = HealthcareDrips::get_fraud_analysis(&env, issue_id).unwrap();
+        let retrieved_analysis = MediChainPlatform::get_fraud_analysis(&env, issue_id).unwrap();
         
         assert_eq!(analysis.issue_id, retrieved_analysis.issue_id);
         assert_eq!(analysis.risk_score, retrieved_analysis.risk_score);

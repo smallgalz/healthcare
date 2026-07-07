@@ -1,6 +1,6 @@
-# 📋 Issues and Acceptance Criteria for Healthcare Drips Contributors
+# 📋 Issues and Acceptance Criteria for MediChain Contributors
 
-This document outlines the issue types, acceptance criteria, and application process for contributors to participate in the Healthcare Drips platform.
+This document outlines the issue types, acceptance criteria, and application process for contributors to participate in the MediChain platform.
 
 ## 🎯 Issue Types and Acceptance Criteria
 

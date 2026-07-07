@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document describes the machine learning-based fraud detection system implemented for the Healthcare Insurance Stellar platform. The system provides pattern recognition, anomaly detection, and automatic claim flagging capabilities.
+This document describes the machine learning-based fraud detection system implemented for the MediChain Platform platform. The system provides pattern recognition, anomaly detection, and automatic claim flagging capabilities.
 
 ## Architecture
 

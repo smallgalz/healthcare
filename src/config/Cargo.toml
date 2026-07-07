@@ -1,8 +1,8 @@
 [package]
-name = "healthcare-config"
+name = "medichain-config"
 version = "0.1.0"
 edition = "2021"
-description = "Distributed Configuration Management for Healthcare Insurance Stellar DApp"
+description = "Distributed Configuration Management for MediChain Healthcare Insurance Stellar DApp"
 
 [lib]
 crate-type = ["cdylib", "rlib"]

@@ -1,6 +1,6 @@
-# Healthcare Insurance Platform - Kubernetes Deployment
+# MediChain Platform - Kubernetes Deployment
 
-This directory contains the complete Kubernetes orchestration setup for the Healthcare Insurance Platform with auto-scaling and service mesh capabilities.
+This directory contains the complete Kubernetes orchestration setup for the MediChain Platform with auto-scaling and service mesh capabilities.
 
 ## Prerequisites
 
@@ -83,9 +83,9 @@ chmod +x deploy.sh
 
 3. **Verify deployment:**
 ```bash
-kubectl get pods -n healthcare-insurance
-kubectl get services -n healthcare-insurance
-kubectl get ingress -n healthcare-insurance
+kubectl get pods -n medichain-platform
+kubectl get services -n medichain-platform
+kubectl get ingress -n medichain-platform
 ```
 
 ## Monitoring and Observability
@@ -161,17 +161,17 @@ kubectl get ingress -n healthcare-insurance
 
 ```bash
 # Check pod logs
-kubectl logs -f deployment/healthcare-backend -n healthcare-insurance
+kubectl logs -f deployment/healthcare-backend -n medichain-platform
 
 # Check events
-kubectl get events -n healthcare-insurance --sort-by='.lastTimestamp'
+kubectl get events -n medichain-platform --sort-by='.lastTimestamp'
 
 # Check HPA status
-kubectl describe hpa healthcare-backend-hpa -n healthcare-insurance
+kubectl describe hpa healthcare-backend-hpa -n medichain-platform
 
 # Check Istio configuration
-kubectl get virtualservices -n healthcare-insurance
-kubectl get destinationrules -n healthcare-insurance
+kubectl get virtualservices -n medichain-platform
+kubectl get destinationrules -n medichain-platform
 ```
 
 ## Maintenance

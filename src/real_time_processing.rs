@@ -1,5 +1,5 @@
 use soroban_sdk::{Address, Env, Symbol, Vec, String, Map, contracttype, contractimpl, symbol_short, Error, BytesN};
-use crate::healthcare_drips::{HealthcareDripsError, FraudRiskLevel};
+use crate::medichain_platform::{MediChainPlatformError, FraudRiskLevel};
 
 #[contracttype]
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -91,7 +91,7 @@ impl RealTimeProcessor {
     /// Initialize the real-time processing system
     pub fn initialize(env: &Env, _admin: Address) -> Result<(), Error> {
         if env.storage().instance().has(&STREAM_DATA_KEY) {
-            return Err(HealthcareDripsError::AlreadyExists.into());
+            return Err(MediChainPlatformError::AlreadyExists.into());
         }
 
         // Initialize storage
@@ -161,16 +161,16 @@ impl RealTimeProcessor {
     /// Validate incoming stream data
     fn validate_stream_data(data: &StreamData) -> Result<(), Error> {
         if data.payload.is_empty() {
-            return Err(HealthcareDripsError::InvalidInput.into());
+            return Err(MediChainPlatformError::InvalidInput.into());
         }
         
         if data.timestamp == 0 {
-            return Err(HealthcareDripsError::InvalidInput.into());
+            return Err(MediChainPlatformError::InvalidInput.into());
         }
 
         // Check for data size limits
         if data.payload.len() > 10000 {
-            return Err(HealthcareDripsError::InvalidInput.into());
+            return Err(MediChainPlatformError::InvalidInput.into());
         }
 
         Ok(())
@@ -348,7 +348,7 @@ impl RealTimeProcessor {
     pub fn get_metrics(env: &Env) -> Result<ProcessingMetrics, Error> {
         env.storage().instance()
             .get(&METRICS_KEY)
-            .ok_or_else(|| HealthcareDripsError::NotFound.into())
+            .ok_or_else(|| MediChainPlatformError::NotFound.into())
     }
 
     /// Get active alerts

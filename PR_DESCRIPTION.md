@@ -2,7 +2,7 @@
 
 ## 🎯 Issue #2: Multi-Token Premium Support
 
-This PR implements comprehensive multi-token premium support for the Healthcare Drips platform, enabling premium payments in multiple tokens simultaneously with automatic conversion through Stellar DEX.
+This PR implements comprehensive multi-token premium support for the MediChain platform, enabling premium payments in multiple tokens simultaneously with automatic conversion through Stellar DEX.
 
 ## ✨ Features Implemented
 
@@ -109,7 +109,7 @@ pub struct PremiumDrip {
 ## 📋 Files Changed
 
 ### Core Implementation
-- `src/healthcare_drips.rs` - Main contract implementation with multi-token support
+- `src/medichain_platform.rs` - Main contract implementation with multi-token support
 - `src/lib.rs` - Added multi-token test module
 - `Cargo.toml` - Updated version to 2.0.0 and description
 
@@ -240,7 +240,7 @@ HealthcareDrips::process_multi_token_premium_payment(
 
 ## 🎉 Summary
 
-This PR successfully implements comprehensive multi-token premium support for the Healthcare Drips platform. The implementation includes all requested features:
+This PR successfully implements comprehensive multi-token premium support for the MediChain platform. The implementation includes all requested features:
 
 1. **Token Allocation Percentages**: Flexible percentage-based token distribution
 2. **Stellar DEX Integration**: Automatic token conversion with swap management

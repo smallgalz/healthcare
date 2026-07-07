@@ -1,8 +1,8 @@
 apiVersion: telemetry.istio.io/v1alpha1
 kind: Telemetry
 metadata:
-  name: healthcare-telemetry
-  namespace: healthcare-insurance
+  name: medichain-telemetry
+  namespace: medichain-platform
 spec:
   metrics:
   - providers:
@@ -17,14 +17,14 @@ spec:
 apiVersion: v1
 kind: ServiceMonitor
 metadata:
-  name: healthcare-metrics
-  namespace: healthcare-insurance
+  name: medichain-metrics
+  namespace: medichain-platform
   labels:
-    app: healthcare-backend
+    app: medichain-backend
 spec:
   selector:
     matchLabels:
-      app: healthcare-backend
+      app: medichain-backend
   endpoints:
   - port: http
     path: /metrics

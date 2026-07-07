@@ -1,4 +1,4 @@
-pub mod healthcare_drips;
+pub mod medichain_platform;
 // pub mod parametric_insurance;
 // pub mod dynamic_premium_adjustment;
 pub mod real_time_processing;

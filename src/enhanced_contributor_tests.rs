@@ -1,6 +1,6 @@
 use soroban_sdk::{Address, Env, Symbol, Vec, String};
-use crate::{
-    HealthcareDrips, HealthcareDripsError, ContributorLevel, KycStatus, LicenseType, LicenseStatus,
+use crate::medichain_platform::{
+    MediChainPlatformError, ContributorLevel, KycStatus, LicenseType, LicenseStatus,
     KycVerification, ProfessionalLicense, ContributorStats
 };
 
@@ -11,10 +11,10 @@ fn test_kyc_verification_submission() {
     let contributor = Address::generate(&env);
     
     // Initialize contract
-    HealthcareDrips::initialize(&env, admin.clone());
+    MediChainPlatform::initialize(&env, admin.clone());
     
     // Submit KYC verification
-    let kyc_id = HealthcareDrips::submit_kyc_verification(
+    let kyc_id = MediChainPlatform::submit_kyc_verification(
         &env,
         String::from_str(&env, "John Doe"),
         946684800, // 2000-01-01
@@ -28,12 +28,12 @@ fn test_kyc_verification_submission() {
     assert_eq!(kyc_id, 1);
     
     // Check KYC status
-    let kyc = HealthcareDrips::get_kyc_verification(&env, contributor.clone()).unwrap();
+    let kyc = MediChainPlatform::get_kyc_verification(&env, contributor.clone()).unwrap();
     assert_eq!(kyc.status, KycStatus::Pending);
     assert_eq!(kyc.full_name, String::from_str(&env, "John Doe"));
     
     // Check contributor stats
-    let stats = HealthcareDrips::get_contributor_stats(&env, contributor).unwrap();
+    let stats = MediChainPlatform::get_contributor_stats(&env, contributor).unwrap();
     assert_eq!(stats.kyc_status, KycStatus::Pending);
 }
 
@@ -45,10 +45,10 @@ fn test_kyc_verification_approval() {
     let reviewer = Address::generate(&env);
     
     // Initialize contract
-    HealthcareDrips::initialize(&env, admin.clone());
+    MediChainPlatform::initialize(&env, admin.clone());
     
     // Submit KYC verification
-    let kyc_id = HealthcareDrips::submit_kyc_verification(
+    let kyc_id = MediChainPlatform::submit_kyc_verification(
         &env,
         String::from_str(&env, "Jane Smith"),
         946684800,
@@ -60,7 +60,7 @@ fn test_kyc_verification_approval() {
     ).unwrap();
     
     // Approve KYC
-    HealthcareDrips::review_kyc_verification(
+    MediChainPlatform::review_kyc_verification(
         &env,
         contributor.clone(),
         true,
@@ -69,11 +69,11 @@ fn test_kyc_verification_approval() {
     ).unwrap();
     
     // Check updated status
-    let kyc = HealthcareDrips::get_kyc_verification(&env, contributor.clone()).unwrap();
+    let kyc = MediChainPlatform::get_kyc_verification(&env, contributor.clone()).unwrap();
     assert_eq!(kyc.status, KycStatus::Approved);
     
     // Check reputation bonus
-    let stats = HealthcareDrips::get_contributor_stats(&env, contributor).unwrap();
+    let stats = MediChainPlatform::get_contributor_stats(&env, contributor).unwrap();
     assert_eq!(stats.reputation, 50); // KYC approval bonus
     assert_eq!(stats.kyc_status, KycStatus::Approved);
 }
@@ -85,10 +85,10 @@ fn test_professional_license_submission() {
     let contributor = Address::generate(&env);
     
     // Initialize contract
-    HealthcareDrips::initialize(&env, admin.clone());
+    MediChainPlatform::initialize(&env, admin.clone());
     
     // Submit and approve KYC first
-    HealthcareDrips::submit_kyc_verification(
+    MediChainPlatform::submit_kyc_verification(
         &env,
         String::from_str(&env, "Dr. Wilson"),
         946684800,
@@ -99,7 +99,7 @@ fn test_professional_license_submission() {
         contributor.clone(),
     ).unwrap();
     
-    HealthcareDrips::review_kyc_verification(
+    MediChainPlatform::review_kyc_verification(
         &env,
         contributor.clone(),
         true,
@@ -108,7 +108,7 @@ fn test_professional_license_submission() {
     ).unwrap();
     
     // Submit professional license
-    let license_id = HealthcareDrips::submit_professional_license(
+    let license_id = MediChainPlatform::submit_professional_license(
         &env,
         LicenseType::MedicalDoctor,
         String::from_str(&env, "MD123456"),
@@ -122,7 +122,7 @@ fn test_professional_license_submission() {
     assert_eq!(license_id, 1);
     
     // Check license status
-    let license = HealthcareDrips::get_professional_license(
+    let license = MediChainPlatform::get_professional_license(
         &env,
         contributor.clone(),
         LicenseType::MedicalDoctor,
@@ -138,10 +138,10 @@ fn test_professional_license_verification() {
     let contributor = Address::generate(&env);
     
     // Initialize contract
-    HealthcareDrips::initialize(&env, admin.clone());
+    MediChainPlatform::initialize(&env, admin.clone());
     
     // Setup: Approve KYC and submit license
-    HealthcareDrips::submit_kyc_verification(
+    MediChainPlatform::submit_kyc_verification(
         &env,
         String::from_str(&env, "Dr. Brown"),
         946684800,
@@ -152,7 +152,7 @@ fn test_professional_license_verification() {
         contributor.clone(),
     ).unwrap();
     
-    HealthcareDrips::review_kyc_verification(
+    MediChainPlatform::review_kyc_verification(
         &env,
         contributor.clone(),
         true,
@@ -160,7 +160,7 @@ fn test_professional_license_verification() {
         admin.clone(),
     ).unwrap();
     
-    HealthcareDrips::submit_professional_license(
+    MediChainPlatform::submit_professional_license(
         &env,
         LicenseType::Nurse,
         String::from_str(&env, "RN456789"),
@@ -172,7 +172,7 @@ fn test_professional_license_verification() {
     ).unwrap();
     
     // Verify license
-    HealthcareDrips::verify_professional_license(
+    MediChainPlatform::verify_professional_license(
         &env,
         contributor.clone(),
         LicenseType::Nurse,
@@ -182,7 +182,7 @@ fn test_professional_license_verification() {
     ).unwrap();
     
     // Check license status
-    let license = HealthcareDrips::get_professional_license(
+    let license = MediChainPlatform::get_professional_license(
         &env,
         contributor.clone(),
         LicenseType::Nurse,
@@ -190,7 +190,7 @@ fn test_professional_license_verification() {
     assert_eq!(license.verification_status, LicenseStatus::Verified);
     
     // Check reputation and tier advancement
-    let stats = HealthcareDrips::get_contributor_stats(&env, contributor).unwrap();
+    let stats = MediChainPlatform::get_contributor_stats(&env, contributor).unwrap();
     assert_eq!(stats.reputation, 125); // 50 (KYC) + 75 (Nurse license)
     assert_eq!(stats.level, ContributorLevel::Intermediate); // 50-149 points
 }
@@ -202,10 +202,10 @@ fn test_reputation_decay_application() {
     let contributor = Address::generate(&env);
     
     // Initialize contract
-    HealthcareDrips::initialize(&env, admin.clone());
+    MediChainPlatform::initialize(&env, admin.clone());
     
     // Setup: Give contributor some reputation
-    HealthcareDrips::submit_kyc_verification(
+    MediChainPlatform::submit_kyc_verification(
         &env,
         String::from_str(&env, "Test User"),
         946684800,
@@ -216,7 +216,7 @@ fn test_reputation_decay_application() {
         contributor.clone(),
     ).unwrap();
     
-    HealthcareDrips::review_kyc_verification(
+    MediChainPlatform::review_kyc_verification(
         &env,
         contributor.clone(),
         true,
@@ -225,19 +225,19 @@ fn test_reputation_decay_application() {
     ).unwrap();
     
     // Simulate time passing (set last activity to past)
-    let mut stats = HealthcareDrips::get_contributor_stats(&env, contributor.clone()).unwrap();
+    let mut stats = MediChainPlatform::get_contributor_stats(&env, contributor.clone()).unwrap();
     stats.last_activity = env.ledger().timestamp() - (40 * 86400); // 40 days ago
     stats.reputation_decay_month = ((env.ledger().timestamp() / 2592000) as u32) - 1; // Last month
     
     // Apply reputation decay
-    HealthcareDrips::apply_reputation_decay(
+    MediChainPlatform::apply_reputation_decay(
         &env,
         contributor.clone(),
         admin.clone(),
     ).unwrap();
     
     // Check decayed reputation
-    let updated_stats = HealthcareDrips::get_contributor_stats(&env, contributor).unwrap();
+    let updated_stats = MediChainPlatform::get_contributor_stats(&env, contributor).unwrap();
     assert_eq!(updated_stats.reputation, 47); // 50 * 0.95 = 47.5, rounded down
 }
 
@@ -248,10 +248,10 @@ fn test_tier_advancement_automation() {
     let contributor = Address::generate(&env);
     
     // Initialize contract
-    HealthcareDrips::initialize(&env, admin.clone());
+    MediChainPlatform::initialize(&env, admin.clone());
     
     // Setup: Approve KYC and multiple licenses for high reputation
-    HealthcareDrips::submit_kyc_verification(
+    MediChainPlatform::submit_kyc_verification(
         &env,
         String::from_str(&env, "Dr. Advanced"),
         946684800,
@@ -262,7 +262,7 @@ fn test_tier_advancement_automation() {
         contributor.clone(),
     ).unwrap();
     
-    HealthcareDrips::review_kyc_verification(
+    MediChainPlatform::review_kyc_verification(
         &env,
         contributor.clone(),
         true,
@@ -271,7 +271,7 @@ fn test_tier_advancement_automation() {
     ).unwrap();
     
     // Submit Medical Doctor license (100 points)
-    HealthcareDrips::submit_professional_license(
+    MediChainPlatform::submit_professional_license(
         &env,
         LicenseType::MedicalDoctor,
         String::from_str(&env, "MD789012"),
@@ -282,7 +282,7 @@ fn test_tier_advancement_automation() {
         contributor.clone(),
     ).unwrap();
     
-    HealthcareDrips::verify_professional_license(
+    MediChainPlatform::verify_professional_license(
         &env,
         contributor.clone(),
         LicenseType::MedicalDoctor,
@@ -292,7 +292,7 @@ fn test_tier_advancement_automation() {
     ).unwrap();
     
     // Submit Pharmacist license (80 points)
-    HealthcareDrips::submit_professional_license(
+    MediChainPlatform::submit_professional_license(
         &env,
         LicenseType::Pharmacist,
         String::from_str(&env, "PH345678"),
@@ -303,7 +303,7 @@ fn test_tier_advancement_automation() {
         contributor.clone(),
     ).unwrap();
     
-    HealthcareDrips::verify_professional_license(
+    MediChainPlatform::verify_professional_license(
         &env,
         contributor.clone(),
         LicenseType::Pharmacist,
@@ -313,7 +313,7 @@ fn test_tier_advancement_automation() {
     ).unwrap();
     
     // Check final tier (should be Senior: 50 + 100 + 80 = 230 points)
-    let stats = HealthcareDrips::get_contributor_stats(&env, contributor).unwrap();
+    let stats = MediChainPlatform::get_contributor_stats(&env, contributor).unwrap();
     assert_eq!(stats.reputation, 230);
     assert_eq!(stats.level, ContributorLevel::Senior);
 }
@@ -325,10 +325,10 @@ fn test_error_handling_kyc_already_submitted() {
     let contributor = Address::generate(&env);
     
     // Initialize contract
-    HealthcareDrips::initialize(&env, admin.clone());
+    MediChainPlatform::initialize(&env, admin.clone());
     
     // Submit first KYC
-    HealthcareDrips::submit_kyc_verification(
+    MediChainPlatform::submit_kyc_verification(
         &env,
         String::from_str(&env, "First KYC"),
         946684800,
@@ -340,7 +340,7 @@ fn test_error_handling_kyc_already_submitted() {
     ).unwrap();
     
     // Try to submit second KYC - should fail
-    let result = HealthcareDrips::submit_kyc_verification(
+    let result = MediChainPlatform::submit_kyc_verification(
         &env,
         String::from_str(&env, "Second KYC"),
         946684800,
@@ -351,7 +351,7 @@ fn test_error_handling_kyc_already_submitted() {
         contributor.clone(),
     );
     
-    assert_eq!(result, Err(HealthcareDripsError::KycAlreadySubmitted));
+    assert_eq!(result, Err(MediChainPlatformError::KycAlreadySubmitted));
 }
 
 #[test]
@@ -361,10 +361,10 @@ fn test_error_handling_license_without_kyc() {
     let contributor = Address::generate(&env);
     
     // Initialize contract
-    HealthcareDrips::initialize(&env, admin.clone());
+    MediChainPlatform::initialize(&env, admin.clone());
     
     // Try to submit license without KYC - should fail
-    let result = HealthcareDrips::submit_professional_license(
+    let result = MediChainPlatform::submit_professional_license(
         &env,
         LicenseType::MedicalDoctor,
         String::from_str(&env, "MD123"),
@@ -375,7 +375,7 @@ fn test_error_handling_license_without_kyc() {
         contributor.clone(),
     );
     
-    assert_eq!(result, Err(HealthcareDripsError::KycNotApproved));
+    assert_eq!(result, Err(MediChainPlatformError::KycNotApproved));
 }
 
 #[test]
@@ -385,10 +385,10 @@ fn test_contributor_eligibility_check() {
     let contributor = Address::generate(&env);
     
     // Initialize contract
-    HealthcareDrips::initialize(&env, admin.clone());
+    MediChainPlatform::initialize(&env, admin.clone());
     
     // Check eligibility without KYC - should be false
-    let eligible = HealthcareDrips::check_contributor_eligibility(
+    let eligible = MediChainPlatform::check_contributor_eligibility(
         &env,
         contributor.clone(),
         ContributorLevel::Junior,
@@ -396,7 +396,7 @@ fn test_contributor_eligibility_check() {
     assert!(!eligible);
     
     // Submit and approve KYC
-    HealthcareDrips::submit_kyc_verification(
+    MediChainPlatform::submit_kyc_verification(
         &env,
         String::from_str(&env, "Eligible User"),
         946684800,
@@ -407,7 +407,7 @@ fn test_contributor_eligibility_check() {
         contributor.clone(),
     ).unwrap();
     
-    HealthcareDrips::review_kyc_verification(
+    MediChainPlatform::review_kyc_verification(
         &env,
         contributor.clone(),
         true,
@@ -416,7 +416,7 @@ fn test_contributor_eligibility_check() {
     ).unwrap();
     
     // Check eligibility with KYC - should be true for Junior level
-    let eligible = HealthcareDrips::check_contributor_eligibility(
+    let eligible = MediChainPlatform::check_contributor_eligibility(
         &env,
         contributor.clone(),
         ContributorLevel::Junior,
@@ -424,7 +424,7 @@ fn test_contributor_eligibility_check() {
     assert!(eligible);
     
     // Check eligibility for higher level - should be false
-    let eligible = HealthcareDrips::check_contributor_eligibility(
+    let eligible = MediChainPlatform::check_contributor_eligibility(
         &env,
         contributor.clone(),
         ContributorLevel::Senior,
@@ -440,10 +440,10 @@ fn test_pending_verifications_view() {
     let contributor2 = Address::generate(&env);
     
     // Initialize contract
-    HealthcareDrips::initialize(&env, admin.clone());
+    MediChainPlatform::initialize(&env, admin.clone());
     
     // Submit KYC for contributor1
-    HealthcareDrips::submit_kyc_verification(
+    MediChainPlatform::submit_kyc_verification(
         &env,
         String::from_str(&env, "User One"),
         946684800,
@@ -455,7 +455,7 @@ fn test_pending_verifications_view() {
     ).unwrap();
     
     // Approve KYC for contributor2 and submit license
-    HealthcareDrips::submit_kyc_verification(
+    MediChainPlatform::submit_kyc_verification(
         &env,
         String::from_str(&env, "User Two"),
         946684800,
@@ -466,7 +466,7 @@ fn test_pending_verifications_view() {
         contributor2.clone(),
     ).unwrap();
     
-    HealthcareDrips::review_kyc_verification(
+    MediChainPlatform::review_kyc_verification(
         &env,
         contributor2.clone(),
         true,
@@ -474,7 +474,7 @@ fn test_pending_verifications_view() {
         admin.clone(),
     ).unwrap();
     
-    HealthcareDrips::submit_professional_license(
+    MediChainPlatform::submit_professional_license(
         &env,
         LicenseType::Nurse,
         String::from_str(&env, "RN333333"),
@@ -486,12 +486,12 @@ fn test_pending_verifications_view() {
     ).unwrap();
     
     // Get pending KYC verifications
-    let pending_kyc = HealthcareDrips::get_pending_kyc_verifications(&env);
+    let pending_kyc = MediChainPlatform::get_pending_kyc_verifications(&env);
     assert_eq!(pending_kyc.len(), 1);
     assert_eq!(pending_kyc.get(0).unwrap().contributor, contributor1);
     
     // Get pending license verifications
-    let pending_licenses = HealthcareDrips::get_pending_license_verifications(&env);
+    let pending_licenses = MediChainPlatform::get_pending_license_verifications(&env);
     assert_eq!(pending_licenses.len(), 1);
     assert_eq!(pending_licenses.get(0).unwrap().contributor, contributor2);
 }

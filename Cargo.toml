@@ -1,12 +1,13 @@
 [package]
-name = "healthcare-drips"
+name = "medichain-platform"
 version = "2.0.0"
 edition = "2021"
 authors = ["akordavid373 <akordavid373@gmail.com>"]
-description = "Healthcare Drips - Medical insurance platform with multi-token premium payments and Stellar DEX integration"
+description = "MediChain - Blockchain-based healthcare insurance platform with multi-token premium payments, AI-driven adjustments, and Stellar DEX integration"
 license = "MIT"
 
 [lib]
+name = "medichain"
 crate-type = ["cdylib"]
 
 [dependencies]
@@ -33,5 +34,5 @@ opt-level = 0
 debug = true
 
 [[bin]]
-name = "healthcare-drips"
+name = "medichain-platform"
 path = "src/main.rs"

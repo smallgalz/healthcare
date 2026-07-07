@@ -1,8 +1,8 @@
 apiVersion: networking.istio.io/v1beta1
 kind: Gateway
 metadata:
-  name: healthcare-gateway
-  namespace: healthcare-insurance
+  name: medichain-gateway
+  namespace: medichain-platform
 spec:
   selector:
     istio: ingressgateway
@@ -12,34 +12,34 @@ spec:
       name: http
       protocol: HTTP
     hosts:
-    - healthcare.example.com
+    - medichain.example.com
   - port:
       number: 443
       name: https
       protocol: HTTPS
     tls:
       mode: SIMPLE
-      credentialName: healthcare-tls
+      credentialName: medichain-tls
     hosts:
-    - healthcare.example.com
+    - medichain.example.com
 ---
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
-  name: healthcare-vs
-  namespace: healthcare-insurance
+  name: medichain-vs
+  namespace: medichain-platform
 spec:
   hosts:
-  - healthcare.example.com
+  - medichain.example.com
   gateways:
-  - healthcare-gateway
+  - medichain-gateway
   http:
   - match:
     - uri:
         prefix: /api
     route:
     - destination:
-        host: backend-service
+        host: medichain-backend-service
         port:
           number: 3000
     timeout: 30s
@@ -51,7 +51,7 @@ spec:
         prefix: /
     route:
     - destination:
-        host: frontend-service
+        host: medichain-frontend-service
         port:
           number: 80
     timeout: 10s
@@ -59,10 +59,10 @@ spec:
 apiVersion: networking.istio.io/v1beta1
 kind: DestinationRule
 metadata:
-  name: healthcare-destination-rule
-  namespace: healthcare-insurance
+  name: medichain-destination-rule
+  namespace: medichain-platform
 spec:
-  host: backend-service
+  host: medichain-backend-service
   trafficPolicy:
     connectionPool:
       tcp:
@@ -80,10 +80,10 @@ spec:
 apiVersion: networking.istio.io/v1beta1
 kind: DestinationRule
 metadata:
-  name: frontend-destination-rule
-  namespace: healthcare-insurance
+  name: medichain-frontend-destination-rule
+  namespace: medichain-platform
 spec:
-  host: frontend-service
+  host: medichain-frontend-service
   trafficPolicy:
     connectionPool:
       tcp:

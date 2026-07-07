@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: healthcare-frontend
-  namespace: healthcare-insurance
+  name: medichain-frontend
+  namespace: medichain-platform
   labels:
-    app: healthcare-frontend
+    app: medichain-frontend
     version: v1
 spec:
   replicas: 2
@@ -15,16 +15,16 @@ spec:
       maxSurge: 1
   selector:
     matchLabels:
-      app: healthcare-frontend
+      app: medichain-frontend
   template:
     metadata:
       labels:
-        app: healthcare-frontend
+        app: medichain-frontend
         version: v1
     spec:
       containers:
       - name: frontend
-        image: healthcare-frontend:latest
+        image: medichain-frontend:latest
         ports:
         - containerPort: 80
         resources:
@@ -62,13 +62,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: frontend-service
-  namespace: healthcare-insurance
+  name: medichain-frontend-service
+  namespace: medichain-platform
   labels:
-    app: healthcare-frontend
+    app: medichain-frontend
 spec:
   selector:
-    app: healthcare-frontend
+    app: medichain-frontend
   ports:
   - name: http
     port: 80

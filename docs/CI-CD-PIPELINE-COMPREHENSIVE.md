@@ -15,7 +15,7 @@
 
 ## Overview
 
-The Healthcare Insurance Stellar CI/CD pipeline provides a comprehensive, automated system for continuous integration, testing, and deployment across multiple environments. It implements enterprise-grade practices including security scanning, performance testing, multi-environment deployments, and automated rollback capabilities.
+The MediChain Platform CI/CD pipeline provides a comprehensive, automated system for continuous integration, testing, and deployment across multiple environments. It implements enterprise-grade practices including security scanning, performance testing, multi-environment deployments, and automated rollback capabilities.
 
 **Key Features:**
 
@@ -519,7 +519,7 @@ node scripts/pipeline/manage-deployment.js rollback \
 
 ```json
 {
-  "text": "Healthcare Drips CI/CD finished",
+  "text": "MediChain CI/CD finished",
   "repository": "user/repo",
   "status": "success",
   "workflow": "CI CD Pipeline",

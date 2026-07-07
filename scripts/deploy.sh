@@ -3,10 +3,10 @@
 set -u
 set -o pipefail
 
-# Healthcare Drips - Stellar Contract Deployment Script
+# MediChain - Stellar Contract Deployment Script
 
-echo "🌟 Healthcare Drips - Stellar Contract Deployment"
-echo "=================================================="
+echo "🌟 MediChain - Stellar Contract Deployment"
+echo "=========================================="
 
 # Check if required environment variables are set
 if [ -z "${SECRET_KEY:-}" ]; then
@@ -32,7 +32,7 @@ echo "🔐 Deployer: $PUBLIC_KEY"
 echo "🌐 RPC URL: $RPC_URL"
 
 # Check if WASM file exists
-WASM_FILE="target/wasm32v1-none/release/healthcare_drips.wasm"
+WASM_FILE="target/wasm32v1-none/release/medichain.wasm"
 if [ ! -f "$WASM_FILE" ]; then
     echo "❌ WASM file not found: $WASM_FILE"
     echo "Please build the contract first:"
@@ -48,7 +48,7 @@ if ! command -v soroban &> /dev/null; then
 fi
 
 # Deploy contract
-echo "🚀 Deploying Healthcare Drips contract..."
+echo "🚀 Deploying MediChain contract..."
 DEPLOY_OUTPUT=$(soroban contract deploy \
     --wasm "$WASM_FILE" \
     --source "$SECRET_KEY" \
@@ -74,7 +74,7 @@ if [ $? -eq 0 ]; then
     echo "📍 Contract ID: $CONTRACT_ID"
     
     # Initialize contract
-    echo "⚙️ Initializing Healthcare Drips contract..."
+    echo "⚙️ Initializing MediChain contract..."
     INIT_OUTPUT=$(soroban contract invoke \
         --id "$CONTRACT_ID" \
         --source "$SECRET_KEY" \

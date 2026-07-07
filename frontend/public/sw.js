@@ -1,4 +1,4 @@
-const CACHE_NAME = 'healthcare-drips-v1';
+const CACHE_NAME = 'medichain-v1';
 const STATIC_CACHE = 'healthcare-drips-static-v1';
 const DYNAMIC_CACHE = 'healthcare-drips-dynamic-v1';
 

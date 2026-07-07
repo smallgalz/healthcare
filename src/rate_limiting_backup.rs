@@ -1,5 +1,5 @@
 use soroban_sdk::{Address, Env, Symbol, Vec, String, Map, contracttype, contractimpl, symbol_short, Error};
-use crate::healthcare_drips::{HealthcareDripsError};
+use crate::medichain_platform::{MediChainPlatformError};
 
 #[contracttype]
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -83,7 +83,7 @@ impl RateLimiter {
     /// Initialize the rate limiting system
     pub fn initialize(env: &Env, _admin: Address) -> Result<(), Error> {
         if env.storage().instance().has(&RATE_LIMITS_KEY) {
-            return Err(HealthcareDripsError::AlreadyExists.into());
+            return Err(MediChainPlatformError::AlreadyExists.into());
         }
 
         // Initialize storage
@@ -620,7 +620,7 @@ impl RateLimiter {
     pub fn get_metrics(env: &Env) -> Result<RateLimitMetrics, Error> {
         env.storage().instance()
             .get(&RATE_METRICS_KEY)
-            .ok_or_else(|| HealthcareDripsError::NotFound.into())
+            .ok_or_else(|| MediChainPlatformError::NotFound.into())
     }
 
     /// Get active DDoS blocks
@@ -643,7 +643,7 @@ impl RateLimiter {
     pub fn get_whitelist(env: &Env) -> Result<Vec<WhitelistEntry>, Error> {
         env.storage().instance()
             .get(&WHITELIST_KEY)
-            .ok_or_else(|| HealthcareDripsError::NotFound.into())
+            .ok_or_else(|| MediChainPlatformError::NotFound.into())
     }
 
     /// Remove DDoS block

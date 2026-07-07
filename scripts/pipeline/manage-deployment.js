@@ -76,7 +76,7 @@ function buildManifest(options) {
   const rootDir = resolveManifestRoot(options.rootDir);
   const artifactPath = options.artifactPath
     ? path.resolve(rootDir, options.artifactPath)
-    : path.resolve(rootDir, 'target/wasm32v1-none/release/healthcare_drips.wasm');
+    : path.resolve(rootDir, 'target/wasm32v1-none/release/medichain.wasm');
 
   const releaseVersion = options.releaseVersion || process.env.GITHUB_SHA || 'local';
   const environment = options.environment || 'development';

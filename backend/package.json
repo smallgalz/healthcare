@@ -1,7 +1,7 @@
 {
-  "name": "healthcare-backend",
+  "name": "medichain-backend",
   "version": "1.0.0",
-  "description": "Backend API for Healthcare Patient Dashboard",
+  "description": "MediChain Backend API - Healthcare insurance platform with AI-driven premium adjustments and multi-token support",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -47,14 +47,14 @@
     "supertest": "^6.3.3"
   },
   "keywords": [
+    "medichain",
     "healthcare",
-    "api",
-    "patient-dashboard",
-    "medical-records",
-    "premium-adjustment",
+    "blockchain",
+    "insurance",
+    "stellar",
     "ai-driven",
-    "insurance"
+    "premium-adjustment"
   ],
-  "author": "Healthcare Team",
+  "author": "MediChain Team",
   "license": "MIT"
 }

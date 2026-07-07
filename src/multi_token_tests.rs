@@ -14,7 +14,7 @@ fn test_multi_token_premium_drip_creation() {
     let token3 = Address::generate(&env);
 
     // Initialize contract
-    HealthcareDrips::initialize(&env, admin.clone());
+    MediChainPlatform::initialize(&env, admin.clone());
 
     // Create token allocations (50% token1, 30% token2, 20% token3)
     let mut allocations = Vec::new(&env);
@@ -35,7 +35,7 @@ fn test_multi_token_premium_drip_creation() {
     });
 
     // Create premium drip with multi-token support
-    let drip_id = HealthcareDrips::create_premium_drip(
+    let drip_id = MediChainPlatform::create_premium_drip(
         &env,
         patient.clone(),
         insurer.clone(),
@@ -48,7 +48,7 @@ fn test_multi_token_premium_drip_creation() {
     ).unwrap();
 
     // Verify drip creation
-    let drip = HealthcareDrips::get_premium_drip(&env, drip_id).unwrap();
+    let drip = MediChainPlatform::get_premium_drip(&env, drip_id).unwrap();
     assert_eq!(drip.patient, patient);
     assert_eq!(drip.insurer, insurer);
     assert_eq!(drip.primary_token, token1);
@@ -67,7 +67,7 @@ fn test_token_allocation_validation() {
     let token1 = Address::generate(&env);
     let token2 = Address::generate(&env);
 
-    HealthcareDrips::initialize(&env, admin.clone());
+    MediChainPlatform::initialize(&env, admin.clone());
 
     // Test invalid allocation (total != 100%)
     let mut invalid_allocations = Vec::new(&env);
@@ -82,7 +82,7 @@ fn test_token_allocation_validation() {
         min_balance: 500,
     });
 
-    let result = HealthcareDrips::create_premium_drip(
+    let result = MediChainPlatform::create_premium_drip(
         &env,
         patient.clone(),
         insurer.clone(),
@@ -94,7 +94,7 @@ fn test_token_allocation_validation() {
         500,
     );
 
-    assert_eq!(result, Err(HealthcareDripsError::InvalidTokenAllocation));
+    assert_eq!(result, Err(MediChainPlatformError::InvalidTokenAllocation));
 }
 
 #[test]
@@ -105,9 +105,9 @@ fn test_swap_request_creation() {
     let token2 = Address::generate(&env);
     let caller = Address::generate(&env);
 
-    HealthcareDrips::initialize(&env, admin.clone());
+    MediChainPlatform::initialize(&env, admin.clone());
 
-    let swap_id = HealthcareDrips::create_swap_request(
+    let swap_id = MediChainPlatform::create_swap_request(
         &env,
         token1.clone(),
         token2.clone(),
@@ -119,7 +119,7 @@ fn test_swap_request_creation() {
     ).unwrap();
 
     // Verify swap request
-    let swap = HealthcareDrips::get_swap_request(&env, swap_id).unwrap();
+    let swap = MediChainPlatform::get_swap_request(&env, swap_id).unwrap();
     assert_eq!(swap.from_token, token1);
     assert_eq!(swap.to_token, token2);
     assert_eq!(swap.amount_in, 1000);
@@ -136,10 +136,10 @@ fn test_slippage_protection() {
     let token2 = Address::generate(&env);
     let caller = Address::generate(&env);
 
-    HealthcareDrips::initialize(&env, admin.clone());
+    MediChainPlatform::initialize(&env, admin.clone());
 
     // Test with excessive slippage
-    let result = HealthcareDrips::create_swap_request(
+    let result = MediChainPlatform::create_swap_request(
         &env,
         token1.clone(),
         token2.clone(),
@@ -151,7 +151,7 @@ fn test_slippage_protection() {
     );
 
     // Should fail due to slippage protection
-    assert_eq!(result, Err(HealthcareDripsError::SlippageExceeded));
+    assert_eq!(result, Err(MediChainPlatformError::SlippageExceeded));
 }
 
 #[test]
@@ -160,11 +160,11 @@ fn test_token_balance_tracking() {
     let admin = Address::generate(&env);
     let token = Address::generate(&env);
 
-    HealthcareDrips::initialize(&env, admin.clone());
+    MediChainPlatform::initialize(&env, admin.clone());
 
     // Initially no balance
-    let result = HealthcareDrips::get_token_balance(&env, token.clone());
-    assert_eq!(result, Err(HealthcareDripsError::InvalidToken));
+    let result = MediChainPlatform::get_token_balance(&env, token.clone());
+    assert_eq!(result, Err(MediChainPlatformError::InvalidToken));
 
     // Create a premium drip to initialize balance tracking
     let patient = Address::generate(&env);
@@ -177,7 +177,7 @@ fn test_token_balance_tracking() {
         min_balance: 100,
     });
 
-    HealthcareDrips::create_premium_drip(
+    MediChainPlatform::create_premium_drip(
         &env,
         patient,
         insurer,
@@ -190,7 +190,7 @@ fn test_token_balance_tracking() {
     ).unwrap();
 
     // Now balance should be tracked
-    let balance = HealthcareDrips::get_token_balance(&env, token.clone()).unwrap();
+    let balance = MediChainPlatform::get_token_balance(&env, token.clone()).unwrap();
     assert_eq!(balance.token, token);
     assert_eq!(balance.balance, 0); // Initially zero
 }
@@ -201,10 +201,10 @@ fn test_rebalance_configuration() {
     let admin = Address::generate(&env);
     let non_admin = Address::generate(&env);
 
-    HealthcareDrips::initialize(&env, admin.clone());
+    MediChainPlatform::initialize(&env, admin.clone());
 
     // Get default config
-    let config = HealthcareDrips::get_rebalance_config(&env);
+    let config = MediChainPlatform::get_rebalance_config(&env);
     assert!(config.enabled);
     assert_eq!(config.threshold, 1000); // 10%
     assert_eq!(config.max_slippage, 500); // 5%
@@ -218,17 +218,17 @@ fn test_rebalance_configuration() {
         last_check: env.ledger().timestamp(),
     };
 
-    let result = HealthcareDrips::update_rebalance_config(
+    let result = MediChainPlatform::update_rebalance_config(
         &env,
         new_config.clone(),
         non_admin.clone(),
     );
-    assert_eq!(result, Err(HealthcareDripsError::Unauthorized));
+    assert_eq!(result, Err(MediChainPlatformError::Unauthorized));
 
     // Test authorized update
-    HealthcareDrips::update_rebalance_config(&env, new_config.clone(), admin.clone()).unwrap();
+    MediChainPlatform::update_rebalance_config(&env, new_config.clone(), admin.clone()).unwrap();
     
-    let updated_config = HealthcareDrips::get_rebalance_config(&env);
+    let updated_config = MediChainPlatform::get_rebalance_config(&env);
     assert!(!updated_config.enabled);
     assert_eq!(updated_config.threshold, 2000);
     assert_eq!(updated_config.max_slippage, 1000);
@@ -243,7 +243,7 @@ fn test_multi_token_premium_payment() {
     let token1 = Address::generate(&env);
     let token2 = Address::generate(&env);
 
-    HealthcareDrips::initialize(&env, admin.clone());
+    MediChainPlatform::initialize(&env, admin.clone());
 
     // Create multi-token drip
     let mut allocations = Vec::new(&env);
@@ -258,7 +258,7 @@ fn test_multi_token_premium_payment() {
         min_balance: 400,
     });
 
-    let drip_id = HealthcareDrips::create_premium_drip(
+    let drip_id = MediChainPlatform::create_premium_drip(
         &env,
         patient.clone(),
         insurer.clone(),
@@ -274,22 +274,22 @@ fn test_multi_token_premium_payment() {
     env.ledger().set_timestamp(env.ledger().timestamp() + 86400 * 30 + 1);
 
     // Test unauthorized payment
-    let result = HealthcareDrips::process_multi_token_premium_payment(
+    let result = MediChainPlatform::process_multi_token_premium_payment(
         &env,
         drip_id,
         patient.clone(), // Not insurer
     );
-    assert_eq!(result, Err(HealthcareDripsError::Unauthorized));
+    assert_eq!(result, Err(MediChainPlatformError::Unauthorized));
 
     // Test authorized payment
-    HealthcareDrips::process_multi_token_premium_payment(
+    MediChainPlatform::process_multi_token_premium_payment(
         &env,
         drip_id,
         insurer.clone(),
     ).unwrap();
 
     // Verify payment was processed
-    let drip = HealthcareDrips::get_premium_drip(&env, drip_id).unwrap();
+    let drip = MediChainPlatform::get_premium_drip(&env, drip_id).unwrap();
     assert_eq!(drip.total_paid, 1000);
     assert!(drip.next_payment > drip.last_payment);
 }
@@ -303,7 +303,7 @@ fn test_auto_rebalancing() {
     let token1 = Address::generate(&env);
     let token2 = Address::generate(&env);
 
-    HealthcareDrips::initialize(&env, admin.clone());
+    MediChainPlatform::initialize(&env, admin.clone());
 
     // Create multi-token drip with auto-rebalance
     let mut allocations = Vec::new(&env);
@@ -318,7 +318,7 @@ fn test_auto_rebalancing() {
         min_balance: 500,
     });
 
-    HealthcareDrips::create_premium_drip(
+    MediChainPlatform::create_premium_drip(
         &env,
         patient.clone(),
         insurer.clone(),
@@ -331,6 +331,6 @@ fn test_auto_rebalancing() {
     ).unwrap();
 
     // Test rebalance checking
-    let result = HealthcareDrips::check_and_rebalance(&env);
+    let result = MediChainPlatform::check_and_rebalance(&env);
     assert_eq!(result, Ok(())); // Should succeed even if no rebalancing needed
 }

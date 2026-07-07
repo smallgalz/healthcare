@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# Healthcare Drips - Stellar Contract Build Script
+# MediChain - Stellar Contract Build Script
 
-echo "🌟 Healthcare Drips - Stellar Contract Build"
-echo "============================================"
+echo "🌟 MediChain - Stellar Contract Build"
+echo "====================================="
 
 # Check if Rust is installed
 if ! command -v cargo &> /dev/null; then
@@ -25,16 +25,16 @@ if ! rustup target list --installed | grep -q wasm32v1-none; then
 fi
 
 # Build the contract
-echo "🔨 Building Healthcare Drips contract..."
+echo "🔨 Building MediChain contract..."
 cargo build --target wasm32v1-none --release
 
 # Check if build was successful
 if [ $? -eq 0 ]; then
     echo "✅ Contract built successfully!"
-    echo "📦 WASM file: target/wasm32v1-none/release/healthcare_drips.wasm"
+    echo "📦 WASM file: target/wasm32v1-none/release/medichain.wasm"
     
     # Show file size
-    WASM_SIZE=$(wc -c < target/wasm32v1-none/release/healthcare_drips.wasm)
+    WASM_SIZE=$(wc -c < target/wasm32v1-none/release/medichain.wasm)
     echo "📊 File size: $WASM_SIZE bytes"
     
     # Run tests
@@ -57,7 +57,7 @@ echo "🚀 Build completed successfully!"
 echo ""
 echo "Next steps:"
 echo "1. Deploy to testnet:"
-echo "   soroban contract deploy --wasm target/wasm32v1-none/release/healthcare_drips.wasm --source \$SECRET_KEY --network testnet"
+echo "   soroban contract deploy --wasm target/wasm32v1-none/release/medichain.wasm --source \$SECRET_KEY --network testnet"
 echo ""
 echo "2. Initialize contract:"
 echo "   soroban contract invoke --id \$CONTRACT_ID --source \$SECRET_KEY -- initialize --admin \$PUBLIC_KEY"

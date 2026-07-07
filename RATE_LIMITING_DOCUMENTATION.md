@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document describes the implementation of a sophisticated rate limiting and throttling system for the Healthcare Insurance Stellar platform. The system provides user-based limits, API endpoint restrictions, DDoS protection, dynamic limit adjustment, whitelisting support, monitoring alerts, and graceful degradation.
+This document describes the implementation of a sophisticated rate limiting and throttling system for the MediChain Platform platform. The system provides user-based limits, API endpoint restrictions, DDoS protection, dynamic limit adjustment, whitelisting support, monitoring alerts, and graceful degradation.
 
 ## Features
 
@@ -369,7 +369,7 @@ pub struct RateLimitMetrics {
 
 ## Integration Points
 
-### Healthcare Drips Core
+### MediChain Core
 - Seamless integration with existing authentication
 - Shared user management system
 - Common error handling patterns
@@ -496,4 +496,4 @@ RateLimiter::remove_ddos_block(&env, admin_address, user_address)?;
 
 ## Conclusion
 
-The rate limiting and throttling system provides comprehensive protection for the Healthcare Insurance Stellar platform while maintaining optimal performance and user experience. The system is designed for scalability, security, and ease of management with extensive monitoring and configuration capabilities.
+The rate limiting and throttling system provides comprehensive protection for the MediChain Platform platform while maintaining optimal performance and user experience. The system is designed for scalability, security, and ease of management with extensive monitoring and configuration capabilities.
