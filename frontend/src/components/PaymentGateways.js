@@ -145,7 +145,7 @@ const PaymentGateways = ({ account, contract }) => {
 
                 <div className="grid sm:grid-cols-2 gap-8">
                     <div className="space-y-4">
-                        <label className="text-sm font-bold text-slate-500 block">Transaction Currency</label>
+                        <label htmlFor="currency-select" className="text-sm font-bold text-slate-500 block">Transaction Currency</label>
                         <div className="flex flex-wrap gap-2">
                             {currencies.map(c => (
                                 <button
@@ -159,7 +159,7 @@ const PaymentGateways = ({ account, contract }) => {
                         </div>
                     </div>
                     <div className="space-y-4">
-                        <label className="text-sm font-bold text-slate-500 block">Quick Amount</label>
+                        <label htmlFor="quick-amount" className="text-sm font-bold text-slate-500 block">Quick Amount</label>
                         <input 
                             type="text" 
                             defaultValue="500.00" 

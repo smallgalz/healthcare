@@ -112,8 +112,8 @@ function App() {
       const ethereumProvider = await detectEthereumProvider();
       if (ethereumProvider) {
         const accounts = await ethereumProvider.request({ method: 'eth_requestAccounts' });
-        const provider = new ethers.providers.Web3Provider(ethereumProvider);
-        const signer = provider.getSigner();
+        const provider = new ethers.BrowserProvider(ethereumProvider);
+        const signer = await provider.getSigner();
         const contract = new ethers.Contract(resolvedContractAddress, HEALTHCARE_DRIPS_ABI, signer);
         
         setAccount(accounts[0]);
@@ -151,7 +151,7 @@ function App() {
         account, // patient
         "0x...", // insurer (would be input)
         "0x...", // token address
-        ethers.utils.parseEther("0.5"), // $500 monthly premium
+        ethers.parseEther("0.5"), // $500 monthly premium
         30 * 24 * 60 * 60 // 30 days
       );
       
@@ -171,7 +171,7 @@ function App() {
       setLoading(true);
       const tx = await contract.contributeToFunding(
         requestId,
-        ethers.utils.parseEther(amount)
+        ethers.parseEther(amount)
       );
       
       await tx.wait();

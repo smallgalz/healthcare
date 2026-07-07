@@ -118,7 +118,7 @@ const fetchRecordsFromContract = async (contract, account) => {
   for (let id = 1; id <= claimCount; id++) {
     fetchPromises.push(
       contract
-        .get_insurance_claim({ claim_id: BigInt(id) })
+        .get_insurance_claim({ claim_id: BigInt(id) })  // eslint-disable-line no-undef
         .catch(() => null) // silently skip missing/errored entries
     );
   }
