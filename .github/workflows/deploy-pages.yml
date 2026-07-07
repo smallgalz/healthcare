@@ -57,14 +57,14 @@ jobs:
           # SPA fallback — GitHub Pages serves 404.html for unknown paths
           cp build/index.html build/404.html
 
-      - name: Copy CNAME file for custom domain
-        run: |
-          cp CNAME _site/
-
       - name: Copy modern frontend to deployment directory
         run: |
           mkdir -p _site
           cp -r frontend/build/* _site/
+
+      - name: Copy CNAME file for custom domain
+        run: |
+          cp CNAME _site/
 
       # ── Web-client (sub-path /web-client/) ──────────────────────
       - name: Cache Web-client dependencies
