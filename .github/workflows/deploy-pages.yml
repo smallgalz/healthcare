@@ -52,8 +52,6 @@ jobs:
 
       - name: Build modern frontend
         working-directory: frontend
-        env:
-          CI: false
         run: |
           PUBLIC_URL=/healthcare/ npm run build
           # SPA fallback — GitHub Pages serves 404.html for unknown paths
