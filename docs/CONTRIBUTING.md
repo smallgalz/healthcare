@@ -225,7 +225,7 @@ Brief description of changes
 ## 📞 Getting Help
 
 - **Discord**: [Join our community](https://discord.gg/medichain)
-- **GitHub Discussions**: [Ask questions](https://github.com/sandrawillow001-afk/medichain-platform/discussions)
+- **GitHub Discussions**: [Ask questions](https://github.com/smallgalz/healthcare/discussions)
 - **GitHub Issues**: Open a GitHub issue for bug reports and security concerns
 
 ## 📜 License

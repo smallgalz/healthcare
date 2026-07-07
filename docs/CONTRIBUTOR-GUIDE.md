@@ -453,7 +453,7 @@ By contributing to MediChain, you're:
 🔗 **Platform**: *Coming soon*
 📚 **Documentation**: *Coming soon*
 💬 **Community**: https://discord.gg/medichain
-🐙 **GitHub**: https://github.com/sandrawillow001-afk/medichain-platform
+🐙 **GitHub**: https://github.com/smallgalz/healthcare
 
 **Together, we can make healthcare more accessible, affordable, and transparent for everyone!** 🌟💫
 

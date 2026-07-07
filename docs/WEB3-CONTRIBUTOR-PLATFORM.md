@@ -533,7 +533,7 @@ import { TouchID } from 'react-native-touch-id';
 5. **Shape Healthcare**: Participate in platform governance
 
 ### **🔗 Platform Links**
-- **GitHub**: https://github.com/sandrawillow001-afk/medichain-platform
+- **GitHub**: https://github.com/smallgalz/healthcare
 - **Web App**: *Coming soon*
 - **Documentation**: *Coming soon*
 - **Community**: https://discord.gg/medichain
@@ -541,7 +541,7 @@ import { TouchID } from 'react-native-touch-id';
 ### **📞 Contact & Support**
 - **GitHub Issues**: Open a GitHub issue for support
 - **Discord**: https://discord.gg/medichain
-- **GitHub Discussions**: https://github.com/sandrawillow001-afk/medichain-platform/discussions
+- **GitHub Discussions**: https://github.com/smallgalz/healthcare/discussions
 
 ---
 
